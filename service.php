@@ -341,7 +341,7 @@ class Clima extends Service
 		if ($image === false)
         {
             $response->setResponseSubject("Clima: Hubo problemas al atender tu solicitud");
-            $response->createFromText("No hemos podido resolver su solicitud: <b>{$title}</b>. Trate intentarlo m&aacute;s tarde y si el problema persiste contacta con el soporte t&eacute;cnico.");
+            $response->createFromText("No hemos podido resolver su solicitud: <b>{$title}</b>. Intente m&aacute;s tarde y si el problema persiste contacta con el soporte t&eacute;cnico.");
             return $response;
         }
 
