@@ -159,7 +159,7 @@ class Clima extends Service
 		if ($url === false){
 			$response = new Response();
 			$response->setResponseSubject("Clima: no se pudo obtener la imagen del sat&eacute;lite");			
-			$response->createFromText("No se pudo obtener la imagen del sat&eacute;lite, intente m&acute;s tarde");
+			$response->createFromText("No se pudo obtener la imagen del sat&eacute;lite, intente m&aacute;s tarde");
 			return $response;
 		}
 		
@@ -197,7 +197,7 @@ class Clima extends Service
 		{
 			$response = new Response();
 			$response->setResponseSubject("Clima: No se pudo obtener la imagen del radar");			
-			$response->createFromText("No se pudo obtener la imagen del radar, intente m&acute;s tarde");
+			$response->createFromText("No se pudo obtener la imagen del radar, intente m&aacute;s tarde");
 			return $response;
 		}
 		
@@ -333,11 +333,19 @@ class Clima extends Service
 	 */
 	private function commonImageResponse($title, $url)
 	{
+        $response = new Response();
+
 		// download and prepare the image
 		$image = $this->downloadAndPrepareImage($url);
 
+		if ($image === false)
+        {
+            $response->setResponseSubject("Clima: Hubo problemas al atender tu solicitud");
+            $response->createFromText("No hemos podido resolver su solicitud: <b>{$title}</b>. Trate intentarlo m&aacute;s tarde y si el problema persiste contacta con el soporte t&eacute;cnico.");
+            return $response;
+        }
+
 		// create response
-		$response = new Response();
 		$response->setResponseSubject("Clima: ".html_entity_decode($title));
 		$response->createFromTemplate("image.tpl", array("title" => $title, "image" => $image), array($image));
 		return $response;
