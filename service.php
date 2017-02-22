@@ -186,7 +186,7 @@ class Clima extends Service
 		$url = false;
 		
 		foreach ($radares as $urlx) 
-			if (file_get_contents($urlx) !== false)
+			if (@file_get_contents($urlx) !== false)
 			{
 				$url = $urlx;
 				break;
