@@ -1,7 +1,7 @@
 <service>
 	<serviceName>clima</serviceName>
-	<serviceDescription><![CDATA[Devuelve el estado del tiempo y el pron&oacute;stico meteor&oacute;logico para Cuba]]></serviceDescription>
-	<creatorEmail>salvi.pascual@gmail.com</creatorEmail>
+	<serviceDescription>Devuelve el estado del tiempo y el pronostico meteorologico para Cuba</serviceDescription>
+	<creatorEmail>salvi@apretaste.com</creatorEmail>
 	<serviceCategory>informativo</serviceCategory>
 	<serviceUsage>
 		<![CDATA[
