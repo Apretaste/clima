@@ -2,6 +2,9 @@
 
 class Clima extends Service
 {
+	public $apiKey = "1790da4c17644e238be34332170508";
+	// public $apiKey = "93fvz526zx8uu26b59cpy9xf";
+	
 	/**
 	 * Gets the most current weather forecast for Cuba 
 	 *
@@ -49,7 +52,7 @@ class Clima extends Service
 		
 		
 		if ($country != 'Cuba') {
-			$r = new WeatherForecast('93fvz526zx8uu26b59cpy9xf');
+			$r = new WeatherForecast($this->apiKey);
 			$x = $r->setRequest($places[0], $country, 3);
 			if ($x === false) {
 				$places = $places_cuba;
@@ -62,10 +65,11 @@ class Clima extends Service
 		foreach ($places  as $place)
 		{
 			// get the weather forecast
-			$r = new WeatherForecast('93fvz526zx8uu26b59cpy9xf');
+			$r = new WeatherForecast($this->apiKey);
 			$r->setRequest($place, $country, 3);
 			$r->setUSMetric(false);
 			$r = $r->getLocalWeather();
+
 			if ( ! $r) continue;
 
 			// get weather details for today
