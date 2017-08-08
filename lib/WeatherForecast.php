@@ -22,7 +22,7 @@ class WeatherForecast
      * 
      * */
     private static $request = array(
-        'local' => 'http://api.worldweatheronline.com/free/v1/weather.ashx'
+        'local' => 'http://api.worldweatheronline.com/premium/v1/weather.ashx'
     );
     /**
      * US metric
