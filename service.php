@@ -3,7 +3,6 @@
 class Clima extends Service
 {
 	public $apiKey = "1790da4c17644e238be34332170508";
-	// public $apiKey = "93fvz526zx8uu26b59cpy9xf";
 	
 	/**
 	 * Gets the most current weather forecast for Cuba 
