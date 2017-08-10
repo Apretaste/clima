@@ -471,6 +471,10 @@ class Clima extends Service
 			116 => 'wsymbol_0002_sunny_intervals.jpg',
 			113 => 'wsymbol_0001_sunny.jpg'
 		);
+
+		if (!isset($images[$code]))
+		    return "{$this->pathToService}/images/wsymbol_0001_sunny.jpg";
+
 		return "{$this->pathToService}/images/" . $images[$code];
 	}
 
