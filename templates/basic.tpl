@@ -35,7 +35,7 @@
 			<td align="center">
 				<b>{$d->weekday}</b>
 				{space5}
-				{img src="{$d->icon}" width="40"}
+				&#{$d->icon}; {*{img src="{$d->icon}" width="40"}*}
 				{space10}
 				<small>
 					{$d->description}<br/>
