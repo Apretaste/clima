@@ -26,7 +26,7 @@
 			</td>
 		</tr>
 	</table>
-
+ {*
 	{space10}
 
 	<table border="0" width="100%" cellpadding="5">
@@ -47,7 +47,7 @@
 			{/foreach}
 		</tr>
 	</table>
-
+*}
 	{if not $w@last}
 		{space10}
 		<hr/>

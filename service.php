@@ -70,7 +70,7 @@ class Clima extends Service
 			$r = $r->getLocalWeather();
 
 			if ( ! $r) continue;
-
+			
 			// get weather details for today
 			$today = new stdClass();
 			$today->location = $place;
@@ -411,6 +411,9 @@ class Clima extends Service
 			116 => 'Parcialmente nublado',
 			113 => 'Despejado'
 		);
+		if (!isset($description[$code]))
+		    return "";
+		
 		return $description[$code];
 	}
 
