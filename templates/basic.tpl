@@ -10,7 +10,7 @@
 			<td align="center" valign="top" width="100" bgcolor="#F2F2F2">
 				<b>Hoy</b>
 				{space5}
-				&#{$w->icon}; {*{img src="{$w->icon}" width="60"}*}
+				&#{$w->icon}; 
 				{space5}
 				<small>{$w->description}</small> 
 			</td>
@@ -26,28 +26,7 @@
 			</td>
 		</tr>
 	</table>
- {*
-	{space10}
-
-	<table border="0" width="100%" cellpadding="5">
-		<tr>
-			{foreach $w->days as $d}
-			<td align="center">
-				<b>{$d->weekday}</b>
-				{space5}
-				&#{$d->icon}; {*{img src="{$d->icon}" width="40"}*}
-				{space10}
-				<small>
-					{$d->description}<br/>
-					Viento: {$d->windDirection}, {$d->windSpeed}<br/>
-					Max: <span style="color: red;">{$d->tempMax}</span>
-					Min: <span style="color: blue;">{$d->tempMin}</span>
-				</small>
-			</td>		
-			{/foreach}
-		</tr>
-	</table>
-*}
+ 
 	{if not $w@last}
 		{space10}
 		<hr/>
