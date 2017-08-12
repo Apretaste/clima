@@ -10,7 +10,7 @@
 			<td align="center" valign="top" width="100" bgcolor="#F2F2F2">
 				<b>Hoy</b>
 				{space5}
-				{img src="{$w->icon}" width="60"}
+				&#{$w->icon}; {*{img src="{$w->icon}" width="60"}*}
 				{space5}
 				<small>{$w->description}</small> 
 			</td>
