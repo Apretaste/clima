@@ -529,7 +529,8 @@ class Clima extends Service
 		if (!isset($images[$code]))
 		//    return "{$this->pathToService}/images/wsymbol_0001_sunny.jpg";
 			return 9728;
-		return "{$this->pathToService}/images/" . $images[$code];
+			
+		return $images[$code];
 	}
 
 
