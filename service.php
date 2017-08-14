@@ -121,7 +121,12 @@ class Clima extends Service
 
 		$response = new Response();
 		$response->setResponseSubject("El Clima");
-		$response->createFromTemplate("basic.tpl", array("weather"=>$weather), $images);
+		
+		$d = date("d/m/Y h:i a", date_create($date)->getTimestamp());
+        $d = str_replace(["/0", " 0"], ["/", " "], $d);
+        if ($d[0] == "0") $d = substr($d, 1);
+        
+		$response->createFromTemplate("basic.tpl", array("weather"=>$weather, "today" => $today), $images);
 		return $response;
 	}
 

@@ -1,5 +1,5 @@
 <h1>El Clima</h1>
-<p><small>{$smarty.now|date_format:"%A, %B %e, %Y"}</small></p>
+<p><small>{$today}</small></p>
 
 {space15}
 
@@ -26,12 +26,7 @@
 			</td>
 		</tr>
 	</table>
- 
-	{if not $w@last}
-		{space10}
-		<hr/>
-		{space10}
-	{/if}
+	{space10}
 {/foreach}
 
 {space30}
