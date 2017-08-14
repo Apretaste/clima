@@ -126,7 +126,7 @@ class Clima extends Service
         $d = str_replace(["/0", " 0"], ["/", " "], $d);
         if ($d[0] == "0") $d = substr($d, 1);
         
-		$response->createFromTemplate("basic.tpl", array("weather"=>$weather, "today" => $today), $images);
+		$response->createFromTemplate("basic.tpl", array("weather"=>$weather, "today" => $d), $images);
 		return $response;
 	}
 
