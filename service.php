@@ -3,22 +3,22 @@
 class Clima extends Service
 {
 	public $apiKey = "1790da4c17644e238be34332170508";
-	
+
 	/**
-	 * Gets the most current weather forecast for Cuba 
+	 * Gets the most current weather forecast for Cuba
 	 *
 	 * @param Request
 	 * @return Response
-	 * */
+	 */
 	public function _main(Request $request)
 	{
 		// include the weather channel library
 		include_once "{$this->pathToService}/lib/WeatherForecast.php";
-	
+
 		$argument = $request->query;
 		$argument = trim($argument);
 		$argument = trim(strtolower($argument));
-		
+
 		$weather = array();
 		$images = array();
 		$imagesya = array();
@@ -27,29 +27,29 @@ class Clima extends Service
 
 		$places = $places_cuba;
 		$country = 'Cuba';
-		
+
 		if (trim($argument) != '')
-		{	
+		{
 			$arr = explode(',', $argument);
 			$arr[0] = trim($arr[0]);
-			
-			if (isset($arr[1]))	$arr[1] = trim($arr[1]); else $arr[1] = '';
-			
+
+			if (isset($arr[1])) $arr[1] = trim($arr[1]); else $arr[1] = '';
+
 			$city = $arr[0];
 			$country = $arr[1];
-			
+
 			if ("$country" == '') $country = false;
-			
+
 			if ("$city" == '' && "$country" != '')
 			{
 				$city = $country;
 				$country = false;
 			}
-			
+
 			$places = array($city);
 		}
-		
-		
+
+
 		if ($country != 'Cuba') {
 			$r = new WeatherForecast($this->apiKey);
 			$x = $r->setRequest($places[0], $country, 3);
@@ -58,8 +58,8 @@ class Clima extends Service
 				$country = 'Cuba';
 			}
 		}
-		
-		
+
+
 		// get the weather information for each province
 		foreach ($places  as $place)
 		{
@@ -70,7 +70,7 @@ class Clima extends Service
 			$r = $r->getLocalWeather();
 
 			if ( ! $r) continue;
-			
+
 			// get weather details for today
 			$today = new stdClass();
 			$today->location = $place;
@@ -78,13 +78,13 @@ class Clima extends Service
 			$today->temperature = $r->weather_now['weatherTemp'];
 			$today->description = $this->getDescriptionBasedOnCode($r->weather_now['weatherCode']);
 			$today->icon = $this->getImageBasedOnCode($r->weather_now['weatherCode']);
-			
+
 			if (!isset($imagesya[$today->icon]))
 			{
 				$imagesya[$today->icon] = true;
-				$images[] = $today->icon;	
+				$images[] = $today->icon;
 			}
-			
+
 			$today->windDirection = $r->weather_now['windDirection'];
 			$today->windSpeed = $r->weather_now['windSpeed'];
 			$today->precipitation = $r->weather_now['precipitation'];
@@ -92,8 +92,8 @@ class Clima extends Service
 			$today->visibility = $r->weather_now['visibility'];
 			$today->pressure = $r->weather_now['pressure'];
 			$today->cloudcover = $r->weather_now['cloudcover'];
-	
-			// get weather details for next 3 days 
+
+			// get weather details for next 3 days
 			$days = array();
 			foreach ($r->weather_forecast as $w)
 			{
@@ -102,10 +102,10 @@ class Clima extends Service
 				$day->weekday = $this->translate($w['weatherDay']);
 				$day->description = $this->getDescriptionBasedOnCode($w['weatherCode']);
 				$day->icon = $this->getImageBasedOnCode($w['weatherCode']);
-				
+
 				if (!isset($imagesya[$day->icon])){
 					$imagesya[$day->icon] = true;
-					$images[] = $day->icon;	
+					$images[] = $day->icon;
 				}
 				$day->windDirection = $w['windDirection'];
 				$day->windSpeed = $w['windSpeed'];
@@ -119,24 +119,24 @@ class Clima extends Service
 			$weather[] = $today;
 		}
 
+		// create the date of today
+		$d = date("d/m/Y h:i a");
+		$d = str_replace(["/0", " 0"], ["/", " "], $d);
+		if ($d[0] == "0") $d = substr($d, 1);
+
+		// return response
 		$response = new Response();
 		$response->setResponseSubject("El Clima");
-		
-		$d = date("d/m/Y h:i a", date_create($date)->getTimestamp());
-        $d = str_replace(["/0", " 0"], ["/", " "], $d);
-        if ($d[0] == "0") $d = substr($d, 1);
-        
 		$response->createFromTemplate("basic.tpl", array("weather"=>$weather, "today" => $d), $images);
 		return $response;
 	}
 
-
 	/**
 	 * Subservice satelite
-	 * 
+	 *
 	 * @param Request
 	 * @return Response
-	 * */
+	 */
 	public function _satelite(Request $request)
 	{
 		// get the url to the image
@@ -166,21 +166,21 @@ class Clima extends Service
 		// TODO: save last radar image on cache for future problems?
 		if ($url === false){
 			$response = new Response();
-			$response->setResponseSubject("Clima: no se pudo obtener la imagen del sat&eacute;lite");			
+			$response->setResponseSubject("Clima: no se pudo obtener la imagen del sat&eacute;lite");
 			$response->createFromText("No se pudo obtener la imagen del sat&eacute;lite, intente m&aacute;s tarde");
 			return $response;
 		}
-		
+
 		return $this->commonImageResponse("Imagen del sat&eacute;lite", $url);
 	}
 
-	
+
 	/**
 	 * Subservice radar
 	 *
 	 * @param Request
 	 * @return Response
-	 * */
+	 */
 	public function _radar(Request $request)
 	{
 		$radares = array(
@@ -192,8 +192,8 @@ class Clima extends Service
 		);
 
 		$url = false;
-		
-		foreach ($radares as $urlx) 
+
+		foreach ($radares as $urlx)
 			if (@file_get_contents($urlx) !== false)
 			{
 				$url = $urlx;
@@ -204,36 +204,36 @@ class Clima extends Service
 		if ($url === false)
 		{
 			$response = new Response();
-			$response->setResponseSubject("Clima: No se pudo obtener la imagen del radar");			
+			$response->setResponseSubject("Clima: No se pudo obtener la imagen del radar");
 			$response->createFromText("No se pudo obtener la imagen del radar, intente m&aacute;s tarde");
 			return $response;
 		}
-		
+
 		return $this->commonImageResponse("Imagen del radar", $url);
 	}
 
-	
+
 	/**
 	 * Subservice nasa
 	 *
 	 * @param Request
 	 * @return Response
-	 * */
+	 */
 	public function _nasa(Request $request)
 	{
 		return $this->commonImageResponse("Imagen de la NASA", "http://goes.gsfc.nasa.gov/goescolor/goeseast/hurricane2/color_med/latest.jpg");
 	}
 
-	
+
 	/**
 	 * Subservice temperatura
 	 *
 	 * @param Request
 	 * @return Response
-	 * */
+	 */
 	public function _temperatura(Request $request)
 	{
-		return $this->commonImageResponse("An&aacute;lisis de la temperatura del mar (NOAA/NHC)","http://polar.ncep.noaa.gov/sst/ophi/nwatl_sst_ophi0.png");	
+		return $this->commonImageResponse("An&aacute;lisis de la temperatura del mar (NOAA/NHC)","http://polar.ncep.noaa.gov/sst/ophi/nwatl_sst_ophi0.png");
 	}
 
 
@@ -242,90 +242,90 @@ class Clima extends Service
 	 *
 	 * @param Request
 	 * @return Response
-	 * */
+	 */
 	public function _superficie(Request $request)
 	{
-		return $this->commonImageResponse("An&aacute;lisis de superficie del Atl&aacute;ntico y el Caribe (NOAA/NHC)","http://dadecosurf.com/images/tanal.1.gif");	
+		return $this->commonImageResponse("An&aacute;lisis de superficie del Atl&aacute;ntico y el Caribe (NOAA/NHC)","http://dadecosurf.com/images/tanal.1.gif");
 	}
 
-	
+
 	/**
 	 * Subservice atlantico
 	 *
 	 * @param Request
 	 * @return Response
-	 * */
+	 */
 	public function _atlantico(Request $request)
 	{
 		return $this->commonImageResponse("An&aacute;lisis del estado del Atl&aacute;ntico (NOAA/NHC)", "http://www.nhc.noaa.gov/tafb_latest/atlsea_latestBW.gif");
 	}
 
-	
+
 	/**
 	 * Subservice caribe
 	 *
 	 * @param Request
 	 * @return Response
-	 * */
+	 */
 	public function _caribe(Request $request)
 	{
 		return $this->commonImageResponse("Imagen del Caribe (Weather Channel)", "http://image.weather.com/images/sat/caribsat_600x405.jpg");
 	}
-	
+
 	/**
 	 * Subservice sector
 	 *
 	 * @param Request
 	 * @return Response
-	 * */
+	 */
 	public function _sector(Request $request)
 	{
 		return $this->commonImageResponse("Imagen del Sector Visible", "http://www.goes.noaa.gov/GIFS/HUVS.JPG");
 	}
 
-	
+
 	/**
 	 * Subservice infrarroja
 	 *
 	 * @param Request
 	 * @return Response
-	 * */
+	 */
 	public function _infrarroja(Request $request)
 	{
 		return $this->commonImageResponse("Imagen infrarroja", "http://www.goes.noaa.gov/GIFS/HUIR.JPG");
 	}
 
-	
+
 	/**
 	 * Subservice vapor
 	 *
 	 * @param Request
 	 * @return Response
-	 * */
+	 */
 	public function _vapor(Request $request)
 	{
 		return $this->commonImageResponse("Imagen del Vapor de Agua", "http://www.goes.noaa.gov/GIFS/HUWV.JPG");
 	}
 
-	
+
 	/**
 	 * Subservice polvo
 	 *
 	 * @param Request
 	 * @return Response
-	 * */
+	 */
 	public function _polvo(Request $request)
-	{ 
+	{
 		return $this->commonImageResponse("Imagen del Polvo del desierto", "http://tropic.ssec.wisc.edu/real-time/sal/splitEW.jpg");
 	}
 
-	
+
 	/**
 	 * Subservice presion
 	 *
 	 * @param Request
 	 * @return Response
-	 * */
+	 */
 	public function _presion(Request $request)
 	{
 		$this->commonImageResponse("Presi&oacute;n superficial", "http://www.nhc.noaa.gov/tafb_latest/WATL_latest.gif");
@@ -341,29 +341,29 @@ class Clima extends Service
 	 */
 	private function commonImageResponse($title, $url)
 	{
-        $response = new Response();
+		$response = new Response();
 
 		// download and prepare the image
 		$image = $this->downloadAndPrepareImage($url);
 
 		if ($image === false)
-        {
-            $response->setResponseSubject("Clima: Hubo problemas al atender tu solicitud");
-            $response->createFromText("No hemos podido resolver su solicitud: <b>{$title}</b>. Intente m&aacute;s tarde y si el problema persiste contacta con el soporte t&eacute;cnico.");
-            return $response;
-        }
+		{
+			$response->setResponseSubject("Clima: Hubo problemas al atender tu solicitud");
+			$response->createFromText("No hemos podido resolver su solicitud: <b>{$title}</b>. Intente m&aacute;s tarde y si el problema persiste contacta con el soporte t&eacute;cnico.");
+			return $response;
+		}
 
 		// create response
 		$response->setResponseSubject("Clima: ".html_entity_decode($title));
 		$response->createFromTemplate("image.tpl", array("title" => $title, "image" => $image), array($image));
 		return $response;
 	}
-	
+
 
 	/**
 	 * Returns the description in Spanish, based on the code
-	 * 
-	 * */
+	 *
+	 */
 	private function getDescriptionBasedOnCode($code)
 	{
 		$description = array(
@@ -417,8 +417,8 @@ class Clima extends Service
 			113 => 'Despejado'
 		);
 		if (!isset($description[$code]))
-		    return "";
-		
+			return "";
+
 		return $description[$code];
 	}
 
@@ -426,7 +426,7 @@ class Clima extends Service
 	/**
 	 * Returns the image based on the code
 	 *
-	 * */
+	 */
 	private function getImageBasedOnCode($code)
 	{
 		/*
@@ -532,9 +532,9 @@ class Clima extends Service
 			113 => 9728
 		);
 		if (!isset($images[$code]))
-		//    return "{$this->pathToService}/images/wsymbol_0001_sunny.jpg";
+		//	return "{$this->pathToService}/images/wsymbol_0001_sunny.jpg";
 			return 9728;
-			
+
 		return $images[$code];
 	}
 
@@ -578,7 +578,7 @@ class Clima extends Service
 			'THURSDAY' => 'Jueves',
 			'FRIDAY' => 'Viernes',
 			'SATURDAY' => 'S&aacute;bado',
-			'SUNDAY' => 'Domingo'		
+			'SUNDAY' => 'Domingo'
 		);
 
 		if (isset($i18n[$word])) return $i18n[$word];
