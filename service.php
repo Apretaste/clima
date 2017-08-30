@@ -126,6 +126,7 @@ class Clima extends Service
 
 		// return response
 		$response = new Response();
+		$response->setCache("day");
 		$response->setResponseSubject("El Clima");
 		$response->createFromTemplate("basic.tpl", array("weather"=>$weather, "today" => $d), $images);
 		return $response;
@@ -166,6 +167,7 @@ class Clima extends Service
 		// TODO: save last radar image on cache for future problems?
 		if ($url === false){
 			$response = new Response();
+			$response->setCache("day");
 			$response->setResponseSubject("Clima: no se pudo obtener la imagen del sat&eacute;lite");
 			$response->createFromText("No se pudo obtener la imagen del sat&eacute;lite, intente m&aacute;s tarde");
 			return $response;
@@ -204,6 +206,7 @@ class Clima extends Service
 		if ($url === false)
 		{
 			$response = new Response();
+			$response->setCache("day");
 			$response->setResponseSubject("Clima: No se pudo obtener la imagen del radar");
 			$response->createFromText("No se pudo obtener la imagen del radar, intente m&aacute;s tarde");
 			return $response;
@@ -354,6 +357,7 @@ class Clima extends Service
 		}
 
 		// create response
+		$response->setCache("day");
 		$response->setResponseSubject("Clima: ".html_entity_decode($title));
 		$response->createFromTemplate("image.tpl", array("title" => $title, "image" => $image), array($image));
 		return $response;
