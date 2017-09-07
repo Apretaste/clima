@@ -59,6 +59,7 @@ class Clima extends Service
 			}
 		}
 
+		$i = 0;
 
 		// get the weather information for each province
 		foreach ($places  as $place)
@@ -67,10 +68,12 @@ class Clima extends Service
 			$r = new WeatherForecast($this->apiKey);
 			$r->setRequest($place, $country, 3);
 			$r->setUSMetric(false);
-			$r = $r->getLocalWeather();
+			$r = @$r->getLocalWeather();
 
 			if ( ! $r) continue;
 
+			$i++;
+			
 			// get weather details for today
 			$today = new stdClass();
 			$today->location = $place;
@@ -119,6 +122,10 @@ class Clima extends Service
 			$weather[] = $today;
 		}
 
+		if ($i == 0) {
+			return $this->_huracan($request);
+		}
+		
 		// create the date of today
 		$d = date("d/m/Y h:i a");
 		$d = str_replace(["/0", " 0"], ["/", " "], $d);
@@ -331,9 +338,14 @@ class Clima extends Service
 	 */
 	public function _presion(Request $request)
 	{
-		$this->commonImageResponse("Presi&oacute;n superficial", "http://www.nhc.noaa.gov/tafb_latest/WATL_latest.gif");
+		return $this->commonImageResponse("Presi&oacute;n superficial", "http://www.nhc.noaa.gov/tafb_latest/WATL_latest.gif");
 	}
 
+	
+	public function _huracan(Request $request) 
+	{
+		return $this->commonImageResponse("Cono de trayectoria huracan", "http://www.met.inf.cu/Pronostico/Aviso/cono.jpg");		
+	}
 	/**
 	 * Common response
 	 *
@@ -359,7 +371,7 @@ class Clima extends Service
 		// create response
 		$response->setCache("day");
 		$response->setResponseSubject("Clima: ".html_entity_decode($title));
-		$response->createFromTemplate("image.tpl", array("title" => $title, "image" => $image), array($image));
+		$response->createFromTemplate("image.tpl", array("title" => $title, "image" => "cid:$image"), array($image));
 		return $response;
 	}
 

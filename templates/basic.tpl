@@ -33,6 +33,7 @@
 
 <h1>Otras m&eacute;tricas</h1>
 <ul>
+	<li>{link href = "CLIMA huracan" caption = "Cono de trayectoria del hurac&aacute;n"}</li>
 	<li>{link href = "CLIMA satelite" caption = "Imagen del sat&eacute;lite"}</li>
 	<li>{link href = "CLIMA nasa" caption = "Imagen de la NASA"}</li>
 	<li>{link href = "CLIMA caribe" caption = "El Caribe</a>"}</li>
