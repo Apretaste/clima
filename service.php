@@ -344,7 +344,9 @@ class Clima extends Service
 	
 	public function _huracan(Request $request) 
 	{
-		return $this->commonImageResponse("Cono de trayectoria huracan", "http://www.met.inf.cu/Pronostico/Aviso/cono.jpg");		
+		return $this->commonImageResponse("Cono de trayectoria huracan", //"http://www.met.inf.cu/Pronostico/Aviso/cono.jpg"
+		"http://images.intellicast.com/WxImages/CustomGraphic/HurTrack2.gif"
+		);		
 	}
 	/**
 	 * Common response
