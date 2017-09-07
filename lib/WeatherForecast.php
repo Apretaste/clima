@@ -214,7 +214,9 @@ class WeatherForecast
         $filemtime = @filemtime($cache_file);
         if (!$filemtime || (time() - $filemtime >= $cache_life)) {
             // Starts the request to cache
-            $contents = @file_get_contents($request);
+            $contents = file_get_contents($request);
+			if ($contents === false) return false;
+				
             // Reads the request and checks for errors
             $doc = simplexml_load_string($contents);
             // Does not make the file cache on error
@@ -231,9 +233,10 @@ class WeatherForecast
         }
         // Initiates the request
         if (filesize($cache_file) > 0) {
-            $doc = simplexml_load_file($cache_file);
+            $doc = @simplexml_load_file($cache_file);
             self::$has_response = true;
-            return self::$doc = $doc;
+            if ($doc === false) return null;	
+			return self::$doc = $doc;
         } else {
             return null;
         }
