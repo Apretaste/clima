@@ -147,6 +147,7 @@ class Clima extends Service
 	 */
 	public function _satelite(Request $request)
 	{
+		/*
 		// get the url to the image
 		$url = false;
 		foreach (array("gif","jpg","png","jpeg") as $ext)
@@ -179,7 +180,8 @@ class Clima extends Service
 			$response->createFromText("No se pudo obtener la imagen del sat&eacute;lite, intente m&aacute;s tarde");
 			return $response;
 		}
-
+		*/
+		$url = "http://images.intellicast.com/WxImages/Satellite/hiatlsat.gif";
 		return $this->commonImageResponse("Imagen del sat&eacute;lite", $url);
 	}
 
