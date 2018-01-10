@@ -577,7 +577,7 @@ class Clima extends Service
 		file_put_contents($filePath, $content);
 
 		// optimize the image
-		$this->utils->optimizeImage($filePath, 400);
+		//$this->utils->optimizeImage($filePath, 400);
 
 		// return the path to the image
 		return $filePath;
