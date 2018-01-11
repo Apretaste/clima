@@ -630,11 +630,35 @@ class Clima extends Service
 		$filePath .= ".$ext";
 		file_put_contents($filePath, $content);
 
-		// optimize the image
-		//$this->utils->optimizeImage($filePath, 400);
-
+		$type = $this->getFileType($filePath);
+		if (strtolower(trim(substr($type,0,6) != 'image/'))) return false;
+		
 		// return the path to the image
 		return $filePath;
+	}
+
+	/**
+	 * Return file info
+	 *
+	 * @param $filename
+	 * @return array|mixed|string
+	 */
+	public function getFileType($filename)
+	{
+		$finfo = finfo_open(FILEINFO_MIME); // return mime type ala mimetype extension
+
+		if (!$finfo) return '';
+
+		/* get mime-type for a specific file */
+		$type = finfo_file($finfo, $filename);
+
+		$type = explode(";", $type);
+		$type = trim($type[0]);
+
+		/* close connection */
+		finfo_close($finfo);
+
+		return $type;
 	}
 
 	/**
