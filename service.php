@@ -224,19 +224,6 @@ class Clima extends Service
 		return $this->commonImageResponse("Imagen del radar", $url);
 	}
 
-
-	/**
-	 * Subservice nasa
-	 *
-	 * @param Request
-	 * @return Response
-	 */
-	public function _nasa(Request $request)
-	{
-		return $this->commonImageResponse("Imagen de la NASA", "http://goes.gsfc.nasa.gov/goescolor/goeseast/hurricane2/color_med/latest.jpg");
-	}
-
-
 	/**
 	 * Subservice temperatura
 	 *
@@ -283,42 +270,6 @@ class Clima extends Service
 	{
 		return $this->commonImageResponse("Imagen del Caribe (Weather Channel)", "http://image.weather.com/images/sat/caribsat_600x405.jpg");
 	}
-
-	/**
-	 * Subservice sector
-	 *
-	 * @param Request
-	 * @return Response
-	 */
-	public function _sector(Request $request)
-	{
-		return $this->commonImageResponse("Imagen del Sector Visible", "http://www.goes.noaa.gov/GIFS/HUVS.JPG");
-	}
-
-
-	/**
-	 * Subservice infrarroja
-	 *
-	 * @param Request
-	 * @return Response
-	 */
-	public function _infrarroja(Request $request)
-	{
-		return $this->commonImageResponse("Imagen infrarroja", "http://www.goes.noaa.gov/GIFS/HUIR.JPG");
-	}
-
-
-	/**
-	 * Subservice vapor
-	 *
-	 * @param Request
-	 * @return Response
-	 */
-	public function _vapor(Request $request)
-	{
-		return $this->commonImageResponse("Imagen del Vapor de Agua", "http://www.goes.noaa.gov/GIFS/HUWV.JPG");
-	}
-
 
 	/**
 	 * Subservice polvo
@@ -632,7 +583,7 @@ class Clima extends Service
 
 		$type = $this->getFileType($filePath);
 		if (strtolower(trim(substr($type,0,6) != 'image/'))) return false;
-		
+
 		// return the path to the image
 		return $filePath;
 	}
