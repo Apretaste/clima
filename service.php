@@ -195,17 +195,17 @@ class Clima extends Service
 	public function _radar(Request $request)
 	{
 		$radares = array(
-		"http://www.met.inf.cu/Radar/NacComp200Km.gif", // mosaico
-		"http://www.met.inf.cu/Radar/03Cienfuegos/psjMAXw01a.gif", // Pico san juan
-		"http://www.met.inf.cu/Radar/04Camaguey/cmwMAXw01a.gif", // Camaguey
-		"http://www.met.inf.cu/Radar/05Pilon/plnMAXw01a.gif", // Pilon,
-		"http://www.met.inf.cu/Radar/00Pinar%20del%20Rio/lbjMAXw01a.gif" // Pinar del rio
+			"http://www.met.inf.cu/Radar/NacComp200Km.gif", // mosaico
+			"http://www.met.inf.cu/Radar/03Cienfuegos/psjMAXw01a.gif", // Pico san juan
+			"http://www.met.inf.cu/Radar/04Camaguey/cmwMAXw01a.gif", // Camaguey
+			"http://www.met.inf.cu/Radar/05Pilon/plnMAXw01a.gif", // Pilon,
+			"http://www.met.inf.cu/Radar/00Pinar%20del%20Rio/lbjMAXw01a.gif" // Pinar del rio
 		);
 
 		$url = false;
 
 		foreach ($radares as $urlx)
-			if (@file_get_contents($urlx) !== false)
+			if ($this->getUrl($urlx) !== false)
 			{
 				$url = $urlx;
 				break;
@@ -558,6 +558,48 @@ class Clima extends Service
 		return $images[$code];
 	}
 
+	/**
+	 * Remote get contents
+	 *
+	 * @param $url
+	 * @param array $info
+	 * @return mixed
+	 */
+	private function getUrl($url, &$info = [])
+	{
+		$url = str_replace("//", "/", $url);
+		$url = str_replace("http:/","http://", $url);
+		$url = str_replace("https:/","https://", $url);
+
+		$ch = curl_init();
+
+		curl_setopt($ch, CURLOPT_URL, $url);
+
+		$default_headers = [
+			"Cache-Control" => "max-age=0",
+			"Origin" => "{$url}",
+			"User-Agent" => "Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/36.0.1985.125 Safari/537.36",
+			"Content-Type" => "application/x-www-form-urlencoded"
+		];
+
+		$hhs = [];
+		foreach ($default_headers as $key => $val)
+			$hhs[] = "$key: $val";
+
+		curl_setopt($ch, CURLOPT_HTTPHEADER, $hhs);
+		curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+		curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
+
+		$html = curl_exec($ch);
+		$info = curl_getinfo($ch);
+
+		if (isset($info['redirect_url']) && $info['redirect_url'] != $url && !empty($info['redirect_url']))
+			return $this->getUrl($info['redirect_url'], $info);
+
+		curl_close($ch);
+
+		return $html;
+	}
 
 	 /**
 	 * Download, resize and optimize the image
@@ -571,9 +613,21 @@ class Clima extends Service
 		$wwwroot = $di->get('path')['root'];
 
 		// save image to the temp folder
-		$filePath = "$wwwroot/temp/" . $this->utils->generateRandomHash() . ".jpg";
-		$content = @file_get_contents($url);
+		$filePath = "$wwwroot/temp/" . $this->utils->generateRandomHash(); //. ".jpg";
+		$info = [];
+		$content = $this->getUrl($url, $info);
+
 		if ($content == false) return false;
+
+		$sinfo = serialize($info);
+		$ext = 'jpg';
+
+		if (stripos($sinfo, 'image/gif') !== false) $ext = 'gif';
+		if (stripos($sinfo, 'image/webp') !== false) $ext = 'webp';
+		if (stripos($sinfo, 'image/bmp') !== false) $ext = 'bmp';
+		if (stripos($sinfo, 'image/png') !== false) $ext = 'png';
+
+		$filePath .= ".$ext";
 		file_put_contents($filePath, $content);
 
 		// optimize the image
