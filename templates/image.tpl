@@ -1,3 +1,21 @@
+<head>
+	<style type="text/css">
+	#return a{
+		background-color: #5EBB47;
+		border: 1px solid #5dbd00;
+		border-radius: 3px;
+		color: #FFFFFF;
+		/*display: inline-block;*/
+		font-family: sans-serif;
+		font-size: 16px;
+		line-height: 44px;
+		text-align: center;
+		width: 150px;
+		padding: 1%;
+		text-decoration: none;
+	}
+	</style>
+</head>
 <h1>{$title}</h1>
 <p><small>{$smarty.now|date_format:"%A, %B %e, %Y"}</small></p>
 {img width="100%" src="{$image}" alt="Foto de {$title}"}
@@ -15,3 +33,6 @@
 	<li>{link href = "CLIMA polvo" caption = "Polvo del desierto"}</li>
 	<li>{link href = "CLIMA presion superficial" caption = "Presi&oacute;n superficial"}</li>
 </ul>
+<p id="return" style="text-align:center;">
+	{link href="CLIMA" caption="Volver al Clima Actual"}
+</p>

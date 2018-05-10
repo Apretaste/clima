@@ -1,8 +1,12 @@
 <?php
+//Import the weather API for OpenWeatherMap
+use Cmfcmf\OpenWeatherMap;
+use Cmfcmf\OpenWeatherMap\Exception as OWMException;
+require_once(__DIR__.'/weatherCache.php');
 
 class Clima extends Service
 {
-	public $apiKey = "1790da4c17644e238be34332170508";
+	public $apiKey = "fdad9949d0a347811e8b84867ccd9707";
 
 	/**
 	 * Gets the most current weather forecast for Cuba
@@ -12,132 +16,190 @@ class Clima extends Service
 	 */
 	public function _main(Request $request)
 	{
-		// include the weather channel library
-		include_once "{$this->pathToService}/lib/WeatherForecast.php";
+		$cache = new OWMCache();
+		$cache->setTempPath($this->utils->getTempDir());
 
-		$argument = $request->query;
-		$argument = trim($argument);
-		$argument = trim(strtolower($argument));
 
-		$weather = array();
-		$images = array();
-		$imagesya = array();
+		$owm = new OpenWeatherMap($this->apiKey, null, $cache, 3600*4); //Cache in seconds
+		$lang='es';
+		$units = 'metric';
 
-		$places_cuba = explode(",","La Habana,Pinar del Rio,Artemisa,Batabano,Varadero,Matanzas,Santa Clara,Cienfuegos,Sancti Spiritus,Trinidad,Camaguey,Ciego de Avila,Las Tunas,Holguin,Bayamo,Santiago de Cuba,Guantanamo");
+		$province = ['PINAR_DEL_RIO' => '3544091',
+								'LA_HABANA' => '3553478',
+								'ARTEMISA' => '3568312',
+								'MAYABEQUE' => '3539560', //San Jose de las Lajas
+								'MATANZAS' => '3547398',
+								'VILLA_CLARA' => '3537906', //Santa Clara
+								'CIENFUEGOS' => '3564124',
+								'SANCTI_SPIRITUS' => '3540667',
+								'CIEGO_DE_AVILA' => '3564178',
+								'CAMAGUEY' => '3566067',
+								'LAS_TUNAS' => '3550598',
+								'HOLGUIN' => '3556969',
+								'GRANMA' => '3547600',
+								'SANTIAGO_DE_CUBA' => '3536729',
+								'GUANTANAMO' => '3557689',
+								'ISLA_DE_LA_JUVENTUD' => '3545867']; //Nueva Gerona
 
-		$places = $places_cuba;
-		$country = 'Cuba';
+		$dtz = new DateTimeZone("America/Havana"); //Your timezone
+		$now = new DateTime(date("d-m-Y"), $dtz);
 
-		if (trim($argument) != '')
-		{
-			$arr = explode(',', $argument);
-			$arr[0] = trim($arr[0]);
-
-			if (isset($arr[1])) $arr[1] = trim($arr[1]); else $arr[1] = '';
-
-			$city = $arr[0];
-			$country = $arr[1];
-
-			if ("$country" == '') $country = false;
-
-			if ("$city" == '' && "$country" != '')
-			{
-				$city = $country;
-				$country = false;
-			}
-
-			$places = array($city);
+		if ($request->query != Null) {
+			$code=$province[str_replace(" ", "_", $request->query)];
 		}
-
-
-		if ($country != 'Cuba') {
-			$r = new WeatherForecast($this->apiKey);
-			$x = $r->setRequest($places[0], $country, 3);
-			if ($x === false) {
-				$places = $places_cuba;
-				$country = 'Cuba';
+		else {
+			$person = $this->utils->getPerson($request->email);
+			if ($person->province!= Null) {
+				$code=$province[$person->province];
+			}
+			else {
+				$code=$province['LA_HABANA'];
 			}
 		}
 
-		$i = 0;
+		try {
+			$weather = $owm->getWeather($code, $units, $lang);
+			$forecast = $owm->getWeatherForecast($code, $units, $lang, '', 1);
 
-		// get the weather information for each province
-		foreach ($places  as $place)
-		{
-			// get the weather forecast
-			$r = new WeatherForecast($this->apiKey);
-			$r->setRequest($place, $country, 3);
-			$r->setUSMetric(false);
-			$r = @$r->getLocalWeather();
-
-			if ( ! $r) continue;
-
-			$i++;
-			
-			// get weather details for today
-			$today = new stdClass();
-			$today->location = $place;
-			$today->time = $r->weather_now['weatherTime'];
-			$today->temperature = $r->weather_now['weatherTemp'];
-			$today->description = $this->getDescriptionBasedOnCode($r->weather_now['weatherCode']);
-			$today->icon = $this->getImageBasedOnCode($r->weather_now['weatherCode']);
-
-			if (!isset($imagesya[$today->icon]))
-			{
-				$imagesya[$today->icon] = true;
-				$images[] = $today->icon;
-			}
-
-			$today->windDirection = $r->weather_now['windDirection'];
-			$today->windSpeed = $r->weather_now['windSpeed'];
-			$today->precipitation = $r->weather_now['precipitation'];
-			$today->humidity = $r->weather_now['humidity'];
-			$today->visibility = $r->weather_now['visibility'];
-			$today->pressure = $r->weather_now['pressure'];
-			$today->cloudcover = $r->weather_now['cloudcover'];
-
-			// get weather details for next 3 days
-			$days = array();
-			foreach ($r->weather_forecast as $w)
-			{
-				$day = new stdClass();
-				$day->date = $w['weatherDate'];
-				$day->weekday = $this->translate($w['weatherDay']);
-				$day->description = $this->getDescriptionBasedOnCode($w['weatherCode']);
-				$day->icon = $this->getImageBasedOnCode($w['weatherCode']);
-
-				if (!isset($imagesya[$day->icon])){
-					$imagesya[$day->icon] = true;
-					$images[] = $day->icon;
-				}
-				$day->windDirection = $w['windDirection'];
-				$day->windSpeed = $w['windSpeed'];
-				$day->tempMax = $w['tempMax'];
-				$day->tempMin = $w['tempMin'];
-				$days[] = $day;
-			}
-
-			// add days to the final result
-			$today->days = $days;
-			$weather[] = $today;
+			$data= ['temperature' => $weather->temperature,
+							'windDirection' => $this->traduce('direction',$weather->wind->direction->getDescription()),
+							'windSpeed' => $weather->wind->speed,
+							'precipitation' => $this->traduce('precipitation',$weather->precipitation->getDescription()),
+							'humidity' => $weather->humidity,
+							'pressure' => $weather->pressure,
+							'sunrise' => $date = ((new DateTime('@' . $weather->sun->rise->getTimestamp()))->setTimezone($dtz))->format('h:m a'),
+							'sunset' => $date = ((new DateTime('@' . $weather->sun->set->getTimestamp()))->setTimezone($dtz))->format('h:m a'),
+							'clouds' => $this->traduce('clouds',$weather->clouds->getDescription()),
+							'lastUpdate' => $date = ((new DateTime('@' . $weather->lastUpdate->getTimestamp()))->setTimezone($dtz))->format('h:m d/M/Y'),
+							'city' => $weather->city->name,
+							'now' => $now->format("d").' de '.$this->traduce('month',$now->format("F")).' del '.$now->format("Y"),
+							'icon' => $this->traduce('icon',$weather->weather->icon),//$this->pathToService.'/images/'.$weather->weather->icon.'.png'
+							'environment' => $request->environment
+		];
+		if ($data['city']=='Havana') {$data['city']="La Habana";}
+		$fcast=array();
+		foreach ($forecast as $w) {
+			$fcast[]=['from' => $date = (new DateTime('@' . $w->time->from->getTimestamp()))->setTimezone($dtz),
+											'to' => $date = (new DateTime('@' . $w->time->to->getTimestamp()))->setTimezone($dtz),
+											'clouds' => $this->traduce('clouds',$w->clouds->getDescription()),
+											'temperature' =>$w->temperature,
+											'precipitation' => $this->traduce('precipitation',$w->precipitation->getDescription()),
+											'icon' => $this->traduce('icon',$w->weather->icon)];//$this->pathToService.'/images/'.$w->weather->icon.'.png'];
+		}
+		} catch(OWMException $e) {
+			$this->utils->createAlert('OpenWeatherMap exception: ' . $e->getMessage() . ' (Code ' . $e->getCode() . ').',"ERROR");
+			$response = new Response();
+			$response->setResponseSubject("Error en peticion");
+			$response->createFromText("Lo siento pero hemos tenido un error inesperado. Enviamos una peticion para corregirlo. Por favor intente nuevamente mas tarde.");
+			return $response;
+			//echo 'OpenWeatherMap exception: ' . $e->getMessage() . ' (Code ' . $e->getCode() . ').';
+		} catch(\Exception $e) {
+			$this->utils->createAlert('General exception: ' . $e->getMessage() . ' (Code ' . $e->getCode() . ').',"ERROR");
+			$response = new Response();
+			$response->setResponseSubject("Error en peticion");
+			$response->createFromText("Lo siento pero hemos tenido un error inesperado. Enviamos una peticion para corregirlo. Por favor intente nuevamente mas tarde.");
+			return $response;
+			//echo 'General exception: ' . $e->getMessage() . ' (Code ' . $e->getCode() . ').';
 		}
 
-		if ($i == 0) {
-			return $this->_huracan($request);
-		}
-		
-		// create the date of today
-		$d = date("d/m/Y h:i a");
-		$d = str_replace(["/0", " 0"], ["/", " "], $d);
-		if ($d[0] == "0") $d = substr($d, 1);
-
-		// return response
 		$response = new Response();
-		$response->setCache("day");
-		$response->setResponseSubject("El Clima");
-		$response->createFromTemplate("basic.tpl", array("weather"=>$weather, "today" => $d), $images);
+		$response->setCache(4);
+		$response->setResponseSubject('El Clima Actual');
+		$response->createFromTemplate('basic.tpl', array('data'=>$data,'fcast'=>$fcast));
 		return $response;
 	}
+
+	/**
+	 *
+	 * @param String
+	 * @param String
+	 * @return String
+	 */
+
+	 public function traduce(String $type, String $text){
+
+		 $clouds=['clear sky' => 'Cielo despejado',
+			 				'scattered clouds' => 'Nubes dispersas',
+							'few clouds' => 'Pocas nubes',
+							'broken clouds' => 'Nubes fragmentadas',
+							'overcast clouds' => 'Nublado'];
+
+		 $direction=['Southwest' => 'Suroeste',
+		 						 'SouthEast' => 'Sureste',
+								 'Northwest' => 'Noroeste',
+								 'NorthEast' => 'Noreste',
+								 'East' => 'Este',
+								 'South' => 'Sur',
+								 'North' => 'Norte',
+								 'West' => 'Oeste',
+								 'North-northeast' => 'Norte-noreste',
+								 'North-northwest' => 'Norte-noroeste',
+								 'South-southeast' => 'Sur-sureste',
+								 'South-southwest' => 'Sur-suroeste',
+								 'West-southwest' => 'Oeste-noroeste',
+								 'West-northwest' => 'Oeste-suroeste',
+								 'East-southeast' =>'Este-sureste',
+								 'East-southwest' =>'Este-suroeste',
+							 	 'East-northeast' => 'Este-noreste',
+							 	 'East-northwest' => 'Este-noroeste'];
+
+				$icon=['01d' => '&#9728;',
+							 '02d' => '&#9925;',
+							 '03d' => '&#9729;',
+							 '04d' => '&#9729;',
+							 '09d' => '&#9748;',
+							 '10d' => '&#9748;',
+							 '11d' => '&#9928;',
+							 '50d' => '&#9776;',
+							 '01n' => '&#9790;',
+							 '02n' => '&#9729;',
+							 '03n' => '&#9729;',
+							 '04n' => '&#9729;',
+							 '09n' => '&#9748;',
+							 '10n' => '&#9748;',
+							 '11n' => '&#9928;',
+							 '50n' => '&#9776;'];
+
+				$month=['Jan' => 'Enero',
+								'Feb' => 'Febrero',
+								'Mar' => 'Marzo',
+								'Apr' => 'Abril',
+								'May' => 'Mayo',
+								'Jun' => 'Junio',
+								'Jul' => 'Julio',
+								'Aug' => 'Agosto',
+								'Sep' => 'Septiembre',
+								'Oct' => 'Octubre',
+								'Nov' => 'Noviembre',
+								'Dec' => 'Diciembre'];
+
+		 switch ($type) {
+		 	case 'clouds':
+		 		return $clouds[$text];
+		 		break;
+
+			case 'direction':
+				return $direction[$text];
+				break;
+
+			case 'precipitation':
+				if($text=='rain') {return 'Lluvioso';}
+				else {return 'no';}
+				break;
+
+			case 'icon':
+				return $icon[$text];
+				break;
+
+			case 'month':
+				return $month[$text];
+				break;
+
+		 	default:
+		 		# code...
+		 		break;
+		 }
+	 }
 
 	/**
 	 * Subservice satelite
@@ -145,6 +207,7 @@ class Clima extends Service
 	 * @param Request
 	 * @return Response
 	 */
+
 	public function _satelite(Request $request)
 	{
 		/*
@@ -181,7 +244,7 @@ class Clima extends Service
 			return $response;
 		}
 		*/
-		$url = "http://images.intellicast.com/WxImages/Satellite/hiatlsat.gif";
+		$url = "http://images.intellicast.com/WxImages/Satellite/hicbsat.gif";
 		return $this->commonImageResponse("Imagen del sat&eacute;lite", $url);
 	}
 
@@ -268,7 +331,7 @@ class Clima extends Service
 	 */
 	public function _caribe(Request $request)
 	{
-		return $this->commonImageResponse("Imagen del Caribe (Weather Channel)", "http://image.weather.com/images/sat/caribsat_600x405.jpg");
+		return $this->commonImageResponse("Imagen del Caribe (Weather Channel)", "http://sirocco.accuweather.com/sat_mosaic_640x480_public/ei/isaecar.gif");
 	}
 
 	/**
@@ -294,12 +357,12 @@ class Clima extends Service
 		return $this->commonImageResponse("Presi&oacute;n superficial", "http://www.nhc.noaa.gov/tafb_latest/WATL_latest.gif");
 	}
 
-	
-	public function _huracan(Request $request) 
+
+	public function _huracan(Request $request)
 	{
 		return $this->commonImageResponse("Cono de trayectoria huracan", //"http://www.met.inf.cu/Pronostico/Aviso/cono.jpg"
 		"http://images.intellicast.com/WxImages/CustomGraphic/HurTrack3.gif"
-		);		
+		);
 	}
 	/**
 	 * Common response
