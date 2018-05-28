@@ -26,6 +26,7 @@ class Clima extends Service
 
 		$province = ['PINAR_DEL_RIO' => '3544091',
 								'LA_HABANA' => '3553478',
+								'HABANA' => '3553478',
 								'ARTEMISA' => '3568312',
 								'MAYABEQUE' => '3539560', //San Jose de las Lajas
 								'MATANZAS' => '3547398',
@@ -45,7 +46,13 @@ class Clima extends Service
 		$now = new DateTime(date("d-m-Y"), $dtz);
 
 		if ($request->query != Null) {
-			$code=$province[str_replace(" ", "_", $request->query)];
+			$code=$province[strtoupper(str_replace(" ", "_", $request->query))];
+			if($code==Null){
+				$response = new Response();
+				$response->setResponseSubject("Provincia no encontrada");
+				$response->createFromText("Lo sentimos, la provincia que usted escribio no pudo ser encontrada");
+				return $response;
+			}
 		}
 		else {
 			$person = $this->utils->getPerson($request->email);
