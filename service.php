@@ -46,11 +46,12 @@ class Clima extends Service
 		$now = new DateTime(date("d-m-Y"), $dtz);
 
 		if ($request->query != Null) {
-			$code=$province[strtoupper(str_replace(" ", "_", $request->query))];
-			if($code==Null){
+			$txt = strtoupper(str_replace(" ", "_", $request->query));
+			if(array_key_exists($txt,$province)) $code=$province[$txt];
+			else{
 				$response = new Response();
 				$response->setResponseSubject("Provincia no encontrada");
-				$response->createFromText("Lo sentimos, la provincia que usted escribio no pudo ser encontrada");
+				$response->createFromText("Lo sentimos, la provincia que usted escribio no pudo ser encontrada, por favor use las opciones que trae el servicio");
 				return $response;
 			}
 		}
@@ -167,18 +168,18 @@ class Clima extends Service
 							 '11n' => '&#9928;',
 							 '50n' => '&#9776;'];
 
-				$month=['Jan' => 'Enero',
-								'Feb' => 'Febrero',
-								'Mar' => 'Marzo',
-								'Apr' => 'Abril',
+				$month=['January' => 'Enero',
+								'February' => 'Febrero',
+								'March' => 'Marzo',
+								'April' => 'Abril',
 								'May' => 'Mayo',
 								'June' => 'Junio',
 								'July' => 'Julio',
-								'Aug' => 'Agosto',
-								'Sep' => 'Septiembre',
-								'Oct' => 'Octubre',
-								'Nov' => 'Noviembre',
-								'Dec' => 'Diciembre'];
+								'August' => 'Agosto',
+								'September' => 'Septiembre',
+								'October' => 'Octubre',
+								'November' => 'Noviembre',
+								'December' => 'Diciembre'];
 
 		 switch ($type) {
 		 	case 'clouds':
