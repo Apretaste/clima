@@ -4,16 +4,17 @@
 		<p id = "sub"><small><%= data.now %></small></p>
 		<div id = "content">
 			<h2><%= data.city %></h2>
-				Temperatura: <%= data.temperature %><br/>
-				Viento: Hacia el <%= data.windDirection %>, a <%= data.windSpeed %><br/>
-				Precipitaciones: <%= data.precipitation %><br/>
-				Humedad: <%= data.humidity %><br/>
-				Presi&oacute;n: <%= data.pressure %><br/>
-				Amanecer: <%= data.sunrise %><br/>
-				Anochecer: <%= data.sunset %><br/>
-				Nubosidad: <%= data.clouds %><br/>
-				Actualizado: <%= data.lastUpdate %><br/>
-			<%= data.icon %>
+			<table class = "stripped">
+				<tr><td>Temperatura</td><td> <%= data.temperature %></td></tr>
+				<tr><td>Viento</td><td> Hacia el <%= data.windDirection %>, a <%= data.windSpeed %></td></tr>
+				<tr><td>Precipitaciones</td><td> <%= data.precipitation %></td></tr>
+				<tr><td>Humedad</td><td> <%= data.humidity %></td></tr>
+				<tr><td>Presi&oacute;n</td><td> <%= data.pressure %></td></tr>
+				<tr><td>Amanecer</td><td> <%= data.sunrise %></td></tr>
+				<tr><td>Anochecer</td><td> <%= data.sunset %></td></tr>
+				<tr><td>Nubosidad</td><td> <%= data.clouds %></td></tr>
+				<tr><td>Actualizado</td><td> <%= data.lastUpdate %></td></tr>
+			</table>
 		</div>
 	</div>
 </div>
