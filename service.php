@@ -204,11 +204,15 @@ class ClimaService extends ApretasteService
 
     switch ($type) {
       case 'clouds':
-        return $clouds[$text];
+        if (isset($clouds[$text])) {
+          return $clouds[$text];
+        }
         break;
 
       case 'direction':
-        return $direction[$text];
+        if (isset($direction[$text])) {
+          return $direction[$text];
+        }
         break;
 
       case 'precipitation':
@@ -221,11 +225,15 @@ class ClimaService extends ApretasteService
         break;
 
       case 'icon':
-        return $icon[$text];
+        if (isset($icon[$text])) {
+          return $icon[$text];
+        }
         break;
 
       case 'month':
-        return $month[$text];
+        if (isset($month[$text])) {
+          return $month[$text];
+        }
         break;
 
       default:
