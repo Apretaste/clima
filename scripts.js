@@ -17,8 +17,6 @@ function showModal(text) {
 }
 
 function showOptions() {
-  // open the modal
-  $("#modalOptions .modal-content").html(text);
   var popup = document.getElementById('modalOptions');
   var modal = M.Modal.init(popup);
   modal.open();
