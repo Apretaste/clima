@@ -1,31 +1,31 @@
-<i class="material-icons left">my_location</i><!-- MENU -->
+<nav class="nav-extended">
+    <div class="nav-wrapper white">
+        <a href="#" class="brand-logo"><i class="material-icons left">cloud</i>Clima</a>
+        <a href="#" data-target="mobile-demo" class="sidenav-trigger"><i class="material-icons">menu</i></a>
+        <!--Logo-->
+        <span class="brand-logo right">
+            <i><b style="color:black; font-size:40px; font-family:Times;">&nbsp; CLIMA</b></i>
+        </span>
+        <ul id="nav-mobile" class="right hide-on-med-and-down">
+            <li>
+                <a class="black-text" href="#!" onclick="apretaste.send({'command':'CLIMA'})">
+                    <i class="material-icons">home</i>
+                </a>
+            </li>
+             <li>
+                <a class="black-text" href="#!" onclick="showOptions();">
+                    <i class="material-icons">center_focus_strong</i>
+                </a>
+            </li>
+            <li>
+                <a href="#!"  class = "link link-simple waves-effect waves-light" data-command = "CLIMA huracan" data-query=""><i class="material-icons left">my_location</i>Hurac&aacute;n</a>
+            </li>
+        </ul>
+    </div>
+</nav>
 <div class="container">
     <div class="row">
-        <nav class="nav-extended">
-            <div class="nav-wrapper white">
-                <a href="#" class="brand-logo"><i class="material-icons left">cloud</i>Clima</a>
-                <a href="#" data-target="mobile-demo" class="sidenav-trigger"><i class="material-icons">menu</i></a>
-                <!--Logo-->
-                <span class="brand-logo right">
-                    <i><b style="color:black; font-size:40px; font-family:Times;">&nbsp; CLIMA</b></i>
-                </span>
-                <ul id="nav-mobile" class="right hide-on-med-and-down">
-                    <li>
-                        <a class="black-text" href="#!" onclick="apretaste.send({'command':'CLIMA'})">
-                            <i class="material-icons">home</i>
-                        </a>
-                    </li>
-                     <li>
-                        <a class="black-text" href="#!" onclick="showOptions();">
-                            <i class="material-icons">center_focus_strong</i>
-                        </a>
-                    </li>
-                    <li>
-                        <a href="#!"  class = "link link-simple waves-effect waves-light" data-command = "CLIMA huracan" data-query=""><i class="material-icons left">my_location</i>Hurac&aacute;n</a>
-                    </li>
-                </ul>
-            </div>
-        </nav>
+
 
         <div id="modalText" class="modal">
             <div class="modal-content">
