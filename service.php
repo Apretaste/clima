@@ -123,7 +123,6 @@ class ClimaService extends ApretasteService
       return;
     }
 
-    $this->response->setCache('day');
     $this->response->setTemplate('basic.ejs', ['data' => $data, 'fcast' => $fcast]);
   }
 
