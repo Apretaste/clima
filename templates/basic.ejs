@@ -22,17 +22,17 @@
 	<div class = "col l12 m12 s12">
 		<h2>Pronostico del clima</h2>
 		<div id = "forecast">
-	<h2>Pronostico del clima</h2>
-			<%= for(var i = 0; i< fcast.length; i++) { %>
-			<span style = "font-weight: bold;font-size: 2em;"><%= w.icon %></span><br/>
-			<%= w.from %> a <%= w.to %><br/>
-			<%= w.temperature %><br/>
-			<%= w.clouds %><br/>
-			<% if (w.precipitation != "no") { %>
-				<%= w.precipitation %><br/>
-			<% } else { %>
-						  Sin lluvias
-			<% } %>
+			<h2>Pronostico del clima</h2>
+			<% for(var i = 0; i< fcast.length; i++) { %>
+				<span style = "font-weight: bold;font-size: 2em;"><%= w.icon %></span><br/>
+				<%= w.from %> a <%= w.to %><br/>
+				<%= w.temperature %><br/>
+				<%= w.clouds %><br/>
+				<% if (w.precipitation != "no") { %>
+					<%= w.precipitation %><br/>
+				<% } else { %>
+							  Sin lluvias
+				<% } %>
 			<% } %>
 		</div>
 	</div>
