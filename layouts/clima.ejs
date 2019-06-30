@@ -1,56 +1,49 @@
-<nav class="nav-extended">
-    <div class="nav-wrapper">
-        <a href="#" class="brand-logo"><i class="material-icons left">cloud</i>Clima</a>
-        <a href="#" data-target="mobile-demo" class="sidenav-trigger"><i class="material-icons">menu</i></a>
-        <ul id="nav-mobile" class="right hide-on-med-and-down">
-            <li>
-                <a class="black-text" href="#!" onclick="apretaste.send({'command':'CLIMA'})">
-                    <i class="material-icons">home</i>
-                </a>
-            </li>
-             <li>
-                <a class="black-text" href="#!" onclick="showOptions();">
-                    <i class="material-icons">center_focus_strong</i>
-                </a>
-            </li>
-            <li>
-                <a href="#!"  class = "link link-simple waves-effect waves-light" data-command = "CLIMA huracan" data-query=""><i class="material-icons left">my_location</i>Hurac&aacute;n</a>
-            </li>
-        </ul>
-    </div>
-</nav>
+<div class = "container">
+    <div class = "row">
+        <nav class = "nav-center">
+            <div class = "nav-wrapper">
+                <a href = "#" class = "brand-logo"><i class = "material-icons left">cloud</i>Clima</a>
+                <a href = "#" data-target = "mobile-demo" class = "sidenav-trigger"><i class = "material-icons">menu</i></a>
+                <ul id = "nav-mobile" class = "right hide-on-med-and-down">
+                    <li>
+                        <a class = "black-text" href = "#!" onclick = "apretaste.send({'command':'CLIMA'})">
+                            <i class = "material-icons">home</i>
+                        </a>
+                    </li>
+                     <li>
+                        <a class = "black-text" href = "#!" onclick = "showOptions();">
+                            <i class = "material-icons">center_focus_strong</i>
+                        </a>
+                    </li>
+                </ul>
+            </div>
+        </nav>
 
-<ul class="sidenav" id="mobile-demo">
-    <li><a href="sass.html">Sass</a></li>
-    <li><a href="badges.html">Components</a></li>
-    <li><a href="collapsible.html">JavaScript</a></li>
-  </ul>
-
-<div class="container">
-    <div class="row">
-        <div id="modalText" class="modal">
-            <div class="modal-content">
+        <div id = "modalText" class = "modal">
+            <div class = "modal-content">
 
             </div>
-            <div class="modal-footer">
-                <a href="#!" class="modal-close waves-effect waves-green btn-flat">Cerrar</a>
+            <div class = "modal-footer">
+                <a href = "#!" class = "modal-close waves-effect waves-green btn-flat">Cerrar</a>
             </div>
         </div>
 
-         <div id="modalOptions" class="modal">
-            <div class="modal-content">
-                <div class="row"><a href="#!"  class = "link link-simple waves-effect waves-light btn" data-command = "CLIMA huracan" data-query=""><i class="material-icons left">my_location</i>Hurac&aacute;n</a></div>
-                <div class="row"><a href="#!" class = "link link-simple waves-effect waves-light btn" data-command = "CLIMA satelite" data-query=""><i class="material-icons left">satellite</i>Sat&eacute;lite</a></div>
-                <div class="row"><a href="#!" class = "link link-simple waves-effect waves-light btn" data-command = "CLIMA caribe" data-query=""><i class="material-icons left">cloud</i>Caribe</a></div>
-                <div class="row"><a href="#!" class = "link link-simple waves-effect waves-light btn" data-command = "CLIMA radar" data-query=""><i class="material-icons left">settings_input_antennaa</i>Radar</a></div>
-                <div class="row"><a href="#!" class = "link link-simple waves-effect waves-light btn" data-command = "CLIMA temperatura" data-query=""><i class="material-icons left">whatshot</i>Temperatura</a></div>
-                <div class="row"><a href="#!" class = "link link-simple waves-effect waves-light btn" data-command = "CLIMA superficie" data-query=""><i class="material-icons left">layers</i>Superficie</a></div>
-                <div class="row"><a href="#!" class = "link link-simple waves-effect waves-light btn" data-command = "CLIMA atlantico" data-query=""><i class="material-icons left">public</i>Atl&aacute;ntico</a></div>
-                <div class="row"><a href="#!" class = "link link-simple waves-effect waves-light btn" data-command = "CLIMA polvo" data-query=""><i class="material-icons left">cloud</i>Polvo del desierto</a></div>
-                <div class="row"><a href="#!" class = "link link-simple waves-effect waves-light btn" data-command = "CLIMA presion" data-query=""><i class="material-icons left">map</i>Presi&oacute;n superficial</a></div>
+         <div id = "modalOptions" class = "modal">
+            <div class = "modal-content">
+                <div class = "row">
+                    <div class = "col l6 m6 s6"><a href = "#!" class = "link link-simple waves-effect waves-light btn" data-command = "CLIMA huracan" data-query = ""><i class = "material-icons left">my_location</i>Hurac&aacute;n</a></div>
+                    <div class = "col l6 m6 s6"><a href = "#!" class = "link link-simple waves-effect waves-light btn" data-command = "CLIMA satelite" data-query = ""><i class = "material-icons left">satellite</i>Sat&eacute;lite</a></div>
+                    <div class = "col l6 m6 s6"><a href = "#!" class = "link link-simple waves-effect waves-light btn" data-command = "CLIMA caribe" data-query = ""><i class = "material-icons left">cloud</i>Caribe</a></div>
+                    <div class = "col l6 m6 s6"><a href = "#!" class = "link link-simple waves-effect waves-light btn" data-command = "CLIMA radar" data-query = ""><i class = "material-icons left">settings_input_antennaa</i>Radar</a></div>
+                    <div class = "col l6 m6 s6"><a href = "#!" class = "link link-simple waves-effect waves-light btn" data-command = "CLIMA temperatura" data-query = ""><i class = "material-icons left">whatshot</i>Temperatura</a></div>
+                    <div class = "col l6 m6 s6"><a href = "#!" class = "link link-simple waves-effect waves-light btn" data-command = "CLIMA superficie" data-query = ""><i class = "material-icons left">layers</i>Superficie</a></div>
+                    <div class = "col l6 m6 s6"><a href = "#!" class = "link link-simple waves-effect waves-light btn" data-command = "CLIMA atlantico" data-query = ""><i class = "material-icons left">public</i>Atl&aacute;ntico</a></div>
+                    <div class = "col l6 m6 s6"><a href = "#!" class = "link link-simple waves-effect waves-light btn" data-command = "CLIMA polvo" data-query = ""><i class = "material-icons left">cloud</i>Polvo del desierto</a></div>
+                    <div class = "col l6 m6 s6"><a href = "#!" class = "link link-simple waves-effect waves-light btn" data-command = "CLIMA presion" data-query = ""><i class = "material-icons left">map</i>Presi&oacute;n superficial</a></div>
+                </div>
             </div>
-            <div class="modal-footer">
-                <a href="#!" class="modal-close waves-effect waves-green btn-flat">Cerrar</a>
+            <div class = "modal-footer">
+                <a href = "#!" class = "modal-close waves-effect waves-green btn-flat">Cerrar</a>
             </div>
         </div>
 
