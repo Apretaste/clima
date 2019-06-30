@@ -24,12 +24,13 @@
 		<div id = "forecast">
 			<h2>Pronostico del clima</h2>
 			<% for(var i = 0; i< fcast.length; i++) { %>
-				<span style = "font-weight: bold;font-size: 2em;"><%= w.icon %></span><br/>
-				<%= w.from %> a <%= w.to %><br/>
-				<%= w.temperature %><br/>
-				<%= w.clouds %><br/>
-				<% if (w.precipitation != "no") { %>
-					<%= w.precipitation %><br/>
+			
+				<span style = "font-weight: bold;font-size: 2em;"><%= fcast[i].icon %></span><br/>
+				<%= fcast[i].from %> a <%= fcast[i].to %><br/>
+				<%= fcast[i].temperature %><br/>
+				<%= fcast[i].clouds %><br/>
+				<% if (fcast[i].precipitation != "no") { %>
+					<%= fcast[i].precipitation %><br/>
 				<% } else { %>
 							  Sin lluvias
 				<% } %>
