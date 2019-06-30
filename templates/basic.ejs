@@ -1,18 +1,9 @@
 <div class = "row">
 	<div class = "col l12 m12 s12">
-	<h1>El Clima Actual</h1>
-	<p id = "sub"><small><%= data.now %></small></p>
+		<h1>El Clima Actual</h1>
+		<p id = "sub"><small><%= data.now %></small></p>
 		<div id = "content">
-		<h2><%= data.city %></h2>
-
-            <!--
-    {link href="CLIMA" caption="Cambiar provincia" desc="m:Cambiar provincia [PINAR DEL RIO,LA HABANA,ARTEMISA,MAYABEQUE,MATANZAS,VILLA CLARA,CIENFUEGOS,SANCTI SPIRITUS,CIEGO DE AVILA,CAMAGUEY,
-    LAS TUNAS,HOLGUIN,GRANMA,SANTIAGO DE CUBA,GUANTANAMO,ISLA DE LA JUVENTUD]*" popup="true" wait="true"
-            -->
-
-            <table class = "table">
-				<tr>
-				<td>
+			<h2><%= data.city %></h2>
 				Temperatura: <%= data.temperature %><br/>
 				Viento: Hacia el <%= data.windDirection %>, a <%= data.windSpeed %><br/>
 				Precipitaciones: <%= data.precipitation %><br/>
@@ -22,37 +13,7 @@
 				Anochecer: <%= data.sunset %><br/>
 				Nubosidad: <%= data.clouds %><br/>
 				Actualizado: <%= data.lastUpdate %><br/>
-			</td>
-			<td style = "font-weight: bold;font-size: 6em; width: 40%;"><%= data.icon %></td>
-            <!--<td>{img src="<%= data.icon %>" alt="Actual" width="100px" %></td>-->
-		</tr>
-	</table>
-
-</div>
-<div id = "forecast">
-	<h2>Pronostico del clima</h2>
-	<table border = "0" width = "100%" cellpadding = "10" cellspacing = "0">
-		<tr>
-			<%= cont = 0 %>
-            {foreach $fcast as $w
-            %>
-            <td style = "width: 25%; height: 50%;">
-						<span style = "font-weight: bold;font-size: 2em;"><%= w.icon %></span><br/>
-                <!--{img src="<%= w.icon %>" alt="Pronostico <%= cont + 1 %>" width="50px" %>-->
-                <%= w.from - > format('H:i') %> a <%= w.to - > format('H:i') %><br/>
-                <%= w.temperature %><br/>
-                <%= w.clouds %><br/>
-                <% if (w.precipitation != "no") { %>
-                    <%= w.precipitation %><br/>
-                <% } else { %>
-                Sin lluvias
-                <% } %>
-            </td>
-            <%= cont = $cont + 1 %>
-            {/foreach
-            %>
-        </tr>
-	</table>
-</div>
+			<%= data.icon %>
+		</div>
 	</div>
 </div>
