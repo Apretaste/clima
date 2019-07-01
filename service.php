@@ -104,7 +104,7 @@ class ClimaService extends ApretasteService
           'from'          => $date = (new DateTime('@' . $w->time->from->getTimestamp()))->setTimezone($dtz),
           'to'            => $date = (new DateTime('@' . $w->time->to->getTimestamp()))->setTimezone($dtz),
           'clouds'        => $this->translate('clouds', $w->clouds->getDescription()),
-          'temperature'   => $w->temperature->min->getFormatted(),
+          'temperature'   => $w->temperature->min->getValue(),
           'precipitation' => $this->translate('precipitation', $w->precipitation->getDescription()),
           'icon'          => $this->translate('icon', $w->weather->icon),
         ];
