@@ -1,14 +1,16 @@
 <div class = "row">
 	<div class = "col l12 m12 s12">
 		<h1>El Clima Actual</h1>
-		<p id = "sub"><small><%= data.now %></small></p>
 		<div id = "content">
 			<div class="row">
-				<div class="col s8 l8 m8">
+				<div class="col s12 l12 m12 center-align">
+					<div class="right-align">
+						<a href="#!" class="btn btn-circle" onclick="showProvinces();" ><i class="medium material-icons">edit_location</i></a>
+					</div>
 					<h2><%= data.city %></h2>
-				</div>
-				<div class="col s4 l4 m4">
 					<span style="font-weight: bold;font-size: 6em; width: 40%;"><%- data.icon %></span>
+					<p id = "sub"><small><%= data.now %></small></p>
+
 				</div>
 			</div>
 			<table class = "stripped">
@@ -32,10 +34,9 @@
 		<div id = "forecast">
 			<% for(var i = 0; i< fcast.length; i++) { %>
 			<div class="row">
-				<div class="col l3 m3 s3">
+				<div class="col l4 m4 s4">
 					<span style = "font-weight: bold;font-size: 2em;"><%- fcast[i].icon %></span>
-					<span class="badge badge-info"><%= fcast[i].clouds %></span>
-					<span class="badge badge-info">
+					<span class="badge badge-info"><%= fcast[i].clouds %> /
 						<% if (fcast[i].precipitation != "no") { %>
 							<%= fcast[i].precipitation %><br/>
 						<% } else { %>
@@ -43,12 +44,20 @@
 						<% } %>
 					</span>
 				</div>
-				<div class="col l9 m9 s9">
+				<div class="col l8 m8 s8">
 					<%= formatTime(fcast[i].from.date) %> a <%= formatTime(fcast[i].to.date) %><br/>
 					<%- fcast[i].temperature %><br/>
 				</div>
 			</div>
 			<% } %>
 		</div>
+	</div>
+</div>
+
+<div id = "modalProvinces" class = "modal">
+	<div class = "modal-content collection">
+		<% for(var i=0; i < provinces.length; i++) { %>
+			<a href = "#!" class = "collection-item link link-simple" data-command = "CLIMA <%= provinces[i] %>" data-query = ""><%= provinces[i].replace('_',' ') %></a>
+		<% }%>
 	</div>
 </div>

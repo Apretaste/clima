@@ -27,3 +27,9 @@ function showOptions() {
   var modal = M.Modal.init(popup);
   modal.open();
 }
+
+function showProvinces() {
+  var popup = document.getElementById('modalProvinces');
+  var modal = M.Modal.init(popup);
+  modal.open();
+}

@@ -123,7 +123,7 @@ class ClimaService extends ApretasteService
       return;
     }
 
-    $this->response->setTemplate('basic.ejs', ['data' => $data, 'fcast' => $fcast]);
+    $this->response->setTemplate('basic.ejs', ['data' => $data, 'fcast' => $fcast, "provinces" => array_keys($province)]);
   }
 
   /**
