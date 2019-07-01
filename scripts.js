@@ -6,7 +6,13 @@ function formatDate(dateStr) {
   return day + '/' + month + '/' + year;
 }
 
-
+function formatTime(dateStr) {
+  var date = new Date(dateStr);
+  var hour = (date.getHours() < 12) ? date.getHours() : date.getHours() - 12;
+  var minutes = String(date.getMinutes()).padStart(2, "0");
+  var amOrPm = (date.getHours() < 12) ? "am" : "pm";
+  return hour + ':' + minutes + amOrPm;
+}
 
 function showModal(text) {
   // open the modal
