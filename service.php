@@ -79,7 +79,7 @@ class ClimaService extends ApretasteService
       $forecast = $owm->getWeatherForecast($code, $units, $lang, '', 1);
 
       $data = [
-        'temperature'   => $weather->temperature,
+        'temperature'   => $weather->temperature->min,
         'windDirection' => $this->translate('direction', $weather->wind->direction->getDescription()),
         'windSpeed'     => $weather->wind->speed,
         'precipitation' => $this->translate('precipitation', $weather->precipitation->getDescription()),
