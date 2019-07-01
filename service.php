@@ -31,7 +31,6 @@ class ClimaService extends ApretasteService
     $province = [
       'PINAR_DEL_RIO'       => '3544091',
       'LA_HABANA'           => '3553478',
-      'HABANA'              => '3553478',
       'ARTEMISA'            => '3568312',
       'MAYABEQUE'           => '3539560', //San Jose de las Lajas
       'MATANZAS'            => '3547398',
@@ -51,8 +50,8 @@ class ClimaService extends ApretasteService
     $dtz = new DateTimeZone("America/Havana"); //Your timezone
     $now = new DateTime(date("d-m-Y"), $dtz);
 
-    if ($this->request->input->data->province ?? null !== null) {
-      $txt = strtoupper(str_replace(" ", "_", $this->request->input->data->query));
+    if ($this->request->input->data->query->province ?? null !== null) {
+      $txt = strtoupper(str_replace(" ", "_", $this->request->input->data->query->province));
       if (array_key_exists($txt, $province)) {
         $code = $province[$txt];
       }

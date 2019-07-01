@@ -36,17 +36,18 @@
 			<div class="row">
 				<div class="col l4 m4 s4">
 					<span style = "font-weight: bold;font-size: 2em;"><%- fcast[i].icon %></span>
-					<span class="badge badge-info"><%= fcast[i].clouds %> /
-						<% if (fcast[i].precipitation != "no") { %>
-							<%= fcast[i].precipitation %><br/>
-						<% } else { %>
-							Sin lluvias
-						<% } %>
-					</span>
+
 				</div>
 				<div class="col l8 m8 s8">
 					<%= formatTime(fcast[i].from.date) %> a <%= formatTime(fcast[i].to.date) %><br/>
-					<%- fcast[i].temperature %><br/>
+					<%- fcast[i].temperature %> / <span class="badge badge-info"><%= fcast[i].clouds %> /
+						<% if (fcast[i].precipitation != "no") { %>
+							<%= fcast[i].precipitation %><br/>
+						<% } else { %>
+						  Sin lluvias
+						<% } %>
+					</span>
+
 				</div>
 			</div>
 			<% } %>
