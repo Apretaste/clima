@@ -79,7 +79,7 @@ class ClimaService extends ApretasteService
       $forecast = $owm->getWeatherForecast($code, $units, $lang, '', 1);
 
       $data = [
-        'temperature'   => $weather->temperature->min,
+        'temperature'   => $weather->temperature->min->getFormatted(),
         'windDirection' => $this->translate('direction', $weather->wind->direction->getDescription()),
         'windSpeed'     => $weather->wind->speed,
         'precipitation' => $this->translate('precipitation', $weather->precipitation->getDescription()),
@@ -104,7 +104,7 @@ class ClimaService extends ApretasteService
           'from'          => $date = (new DateTime('@' . $w->time->from->getTimestamp()))->setTimezone($dtz),
           'to'            => $date = (new DateTime('@' . $w->time->to->getTimestamp()))->setTimezone($dtz),
           'clouds'        => $this->translate('clouds', $w->clouds->getDescription()),
-          'temperature'   => $w->temperature,
+          'temperature'   => $w->temperature->min->getFormatted(),
           'precipitation' => $this->translate('precipitation', $w->precipitation->getDescription()),
           'icon'          => $this->translate('icon', $w->weather->icon),
         ];
