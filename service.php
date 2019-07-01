@@ -359,6 +359,8 @@ class ClimaService extends ApretasteService
    */
   private function commonImageResponse($title, $url)
   {
+    $this->response->setLayout('clima.ejs');
+
     // download and prepare the image
     $image = $this->downloadAndPrepareImage($url);
 
@@ -371,8 +373,6 @@ class ClimaService extends ApretasteService
     }
 
     // create response
-    $this->response->setCache("day");
-    $this->response->setLayout('clima.ejs');
     $this->response->setTemplate('image.ejs', ["title" => $title, "image" => basename("$image")], [$image]);
   }
 
