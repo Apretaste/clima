@@ -5,7 +5,7 @@
 			<div class="row">
 				<div class="col s12 l12 m12 center-align">
 					<div class="right-align">
-						<a href="#!" class="btn btn-circle" onclick="showProvinces();" ><i class="medium material-icons">edit_location</i></a>
+						<a href="#!" class="btn btn-floating btn-large waves-effect waves-light blue" onclick="showProvinces();" ><i class="medium material-icons">edit_location</i></a>
 					</div>
 					<h2><%= data.city %></h2>
 					<span style="font-weight: bold;font-size: 6em; width: 40%;"><%- data.icon %></span>
@@ -34,11 +34,10 @@
 		<div id = "forecast">
 			<% for(var i = 0; i< fcast.length; i++) { %>
 			<div class="row">
-				<div class="col l4 m4 s4">
+				<div class="col l2 m4 s2">
 					<span style = "font-weight: bold;font-size: 2em;"><%- fcast[i].icon %></span>
-
 				</div>
-				<div class="col l8 m8 s8">
+				<div class="col l10 m10 s10">
 					<%= formatTime(fcast[i].from.date) %> a <%= formatTime(fcast[i].to.date) %><br/>
 					<%- fcast[i].temperature %> / <span class="badge badge-info"><%= fcast[i].clouds %> /
 						<% if (fcast[i].precipitation != "no") { %>
