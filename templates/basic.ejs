@@ -37,9 +37,9 @@
 					<span style = "font-weight: bold;font-size: 2em;"><%- fcast[i].icon %></span>
 				</div>
 				<div class="col l10 m10 s10">
-					<%= formatTime(fcast[i].from.date) %> a <%= formatTime(fcast[i].to.date) %><br/>
-					<span class="badge badge-info"><%- fcast[i].temperature %></span> /
-					<span class="badge badge-info"><%= fcast[i].clouds %></span> /
+					<span class="badge badge-info"><%= formatTime(fcast[i].from.date) %> a <%= formatTime(fcast[i].to.date) %></span>
+					<span class="badge badge-info"><%- fcast[i].temperature %></span>
+					<span class="badge badge-info"><%= fcast[i].clouds %></span>
 					<span class="badge badge-info">
 						<% if (fcast[i].precipitation != "no") { %>
 							<%= fcast[i].precipitation %><br/>
