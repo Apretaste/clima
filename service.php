@@ -79,12 +79,12 @@ class ClimaService extends ApretasteService
       $forecast = $owm->getWeatherForecast($code, $units, $lang, '', 1);
 
       $data = [
-        'temperature'   => $weather->temperature->min->getFormatted(),
+        'temperature'   => $weather->temperature->getFormatted(),
         'windDirection' => $this->translate('direction', $weather->wind->direction->getDescription()),
-        'windSpeed'     => $weather->wind->speed,
+        'windSpeed'     => $weather->wind->speed->getFormatted(),
         'precipitation' => $this->translate('precipitation', $weather->precipitation->getDescription()),
-        'humidity'      => $weather->humidity,
-        'pressure'      => $weather->pressure,
+        'humidity'      => $weather->humidity->getFormatted(),
+        'pressure'      => $weather->pressure->getFormatted(),
         'sunrise'       => $date = ((new DateTime('@' . $weather->sun->rise->getTimestamp()))->setTimezone($dtz))->format('h:m a'),
         'sunset'        => $date = ((new DateTime('@' . $weather->sun->set->getTimestamp()))->setTimezone($dtz))->format('h:m a'),
         'clouds'        => $this->translate('clouds', $weather->clouds->getDescription()),
@@ -104,7 +104,7 @@ class ClimaService extends ApretasteService
           'from'          => $date = (new DateTime('@' . $w->time->from->getTimestamp()))->setTimezone($dtz),
           'to'            => $date = (new DateTime('@' . $w->time->to->getTimestamp()))->setTimezone($dtz),
           'clouds'        => $this->translate('clouds', $w->clouds->getDescription()),
-          'temperature'   => $w->temperature->min->getFormatted(),
+          'temperature'   => $w->temperature->getFormatted(),
           'precipitation' => $this->translate('precipitation', $w->precipitation->getDescription()),
           'icon'          => $this->translate('icon', $w->weather->icon),
         ];

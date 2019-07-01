@@ -13,10 +13,10 @@
 			</div>
 			<table class = "stripped">
 				<tr><td>Temperatura</td><td> <%- data.temperature %></td></tr>
-				<tr><td>Viento</td><td> Hacia el <%= data.windDirection %>, a <%= data.windSpeed %></td></tr>
+				<tr><td>Viento</td><td> Hacia el <%- data.windDirection %>, a <%- data.windSpeed %></td></tr>
 				<tr><td>Precipitaciones</td><td> <%= data.precipitation %></td></tr>
-				<tr><td>Humedad</td><td> <%= data.humidity %></td></tr>
-				<tr><td>Presi&oacute;n</td><td> <%= data.pressure %></td></tr>
+				<tr><td>Humedad</td><td> <%- data.humidity %></td></tr>
+				<tr><td>Presi&oacute;n</td><td> <%- data.pressure %></td></tr>
 				<tr><td>Amanecer</td><td> <%= data.sunrise %></td></tr>
 				<tr><td>Anochecer</td><td> <%= data.sunset %></td></tr>
 				<tr><td>Nubosidad</td><td> <%= data.clouds %></td></tr>
@@ -37,7 +37,7 @@
 				</div>
 				<div class="col l9 m9 s9">
 					<%= formatTime(fcast[i].from.date) %> a <%= formatTime(fcast[i].to.date) %><br/>
-					<%= fcast[i].temperature.day %><br/>
+					<%- fcast[i].temperature %><br/>
 					<span class="badge"><%= fcast[i].clouds %></span>
 					<span class="badge">
 					<% if (fcast[i].precipitation != "no") { %>
