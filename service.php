@@ -373,9 +373,8 @@ class ClimaService extends ApretasteService
     // create response
     $this->response->setCache("day");
     $this->response->setLayout('clima.ejs');
-    $this->response->setTemplate('image.ejs', ["title" => $title, "image" => "cid:$image"], [$image], $this->files);
+    $this->response->setTemplate('image.ejs', ["title" => $title, "image" => basename("$image")], [$image]);
   }
-
 
   /**
    * Returns the description in Spanish, based on the code
