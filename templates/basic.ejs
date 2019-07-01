@@ -31,15 +31,21 @@
 		<h2>Pronostico del clima</h2>
 		<div id = "forecast">
 			<% for(var i = 0; i< fcast.length; i++) { %>
-				<span style = "font-weight: bold;font-size: 2em;"><%- fcast[i].icon %></span><br/>
-				<%= formatTime(fcast[i].from.date) %> a <%= formatTime(fcast[i].to.date) %><br/>
-				<%= fcast[i].temperature.day %><br/>
-				<%= fcast[i].clouds %><br/>
-				<% if (fcast[i].precipitation != "no") { %>
-					<%= fcast[i].precipitation %><br/>
-				<% } else { %>
-				Sin lluvias
-				<% } %>
+			<div class="row">
+				<div class="col l6 m6 s6">
+					<span style = "font-weight: bold;font-size: 2em;"><%- fcast[i].icon %></span>
+				</div>
+				<div class="col l6 m6 s6">
+					<%= formatTime(fcast[i].from.date) %> a <%= formatTime(fcast[i].to.date) %><br/>
+					<%= fcast[i].temperature.day %><br/>
+					<%= fcast[i].clouds %><br/>
+					<% if (fcast[i].precipitation != "no") { %>
+						<%= fcast[i].precipitation %><br/>
+					<% } else { %>
+					Sin lluvias
+					<% } %>
+				</div>
+			</div>
 			<% } %>
 		</div>
 	</div>
