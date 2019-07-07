@@ -283,7 +283,7 @@ class ClimaService extends ApretasteService
       return;
     }
 
-    $this->commonImageResponse("Imagen del radar", $url);
+    $this->commonImageResponse("Imagen del radar", "http://www.met.inf.cu/Radar/NacComp200Km.gif");
   }
 
   /**
