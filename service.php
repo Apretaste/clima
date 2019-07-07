@@ -617,7 +617,7 @@ class ClimaService extends ApretasteService
     // save image to the temp folder
     $filePath = "$www_root/temp/" . Utils::generateRandomHash(); //. ".jpg";
     $info = [];
-    $content = $this->getUrl($url, $info);
+    $content = Utils::file_get_contents_curl($url);
 
     if ($content == false) {
       return false;
