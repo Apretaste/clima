@@ -1,3 +1,9 @@
+function ucwords(str){
+    return(str+'').replace(/^(.)|\s(.)/g,function($1){
+        return $1.toUpperCase();
+    });
+}
+
 function formatDate(dateStr) {
   var date = new Date(dateStr);
   var year = date.getFullYear();
