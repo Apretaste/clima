@@ -39,3 +39,7 @@ function showProvinces() {
   var modal = M.Modal.init(popup);
   modal.open();
 }
+
+$(function(){
+  alert('CLIMA');
+});
