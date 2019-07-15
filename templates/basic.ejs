@@ -24,3 +24,26 @@
 		</div>
 	</div>
 </div>
+<div class="row">
+	<div class = "col l12 m12 s12">
+		<h2>Pronostico del clima</h2>
+		<div id = "forecast">
+			<% for(var i = 0; i< fcast.length; i++) { %>
+				<div class="row">
+				<div class="col l2 m4 s2">
+					<span style = "font-weight: bold;font-size: 2em;"><%- fcast[i].icon %></span>
+				</div>
+				<div class="col l10 m10 s10">
+					<%= formatTime(fcast[i].from.date) %> a <%= formatTime(fcast[i].to.date) %> <br/>
+					<%- fcast[i].temperature %> / <%= fcast[i].clouds %> /
+					<% if (fcast[i].precipitation != "no") { %>
+						<%= fcast[i].precipitation %><br/>
+					<% } else { %>
+														  Sin lluvias
+					<% } %>
+				</div>
+			</div>
+			<% } %>
+		</div>
+	</div>
+</div>
