@@ -3,9 +3,6 @@
 		<div id = "content">
 			<div class="row">
 				<div class="col s12 l12 m12 center-align">
-					<div class="right-align">
-
-					</div>
 					<h2><%= data.city %>&nbsp;<a href="#!" onclick="showProvinces();" ><i class="tiny material-icons grey-text">edit</i></a></h2>
 					<span style="font-weight: bold;font-size: 6em; width: 40%;"><%- data.icon %></span>
 					<p id = "sub"><small><%= data.now %></small></p>
@@ -25,36 +22,5 @@
 			</table>
 
 		</div>
-	</div>
-</div>
-<div class="row">
-	<div class = "col l12 m12 s12">
-		<h2>Pronostico del clima</h2>
-		<div id = "forecast">
-			<% for(var i = 0; i< fcast.length; i++) { %>
-			<div class="row">
-				<div class="col l2 m4 s2">
-					<span style = "font-weight: bold;font-size: 2em;"><%- fcast[i].icon %></span>
-				</div>
-				<div class="col l10 m10 s10">
-					<%= formatTime(fcast[i].from.date) %> a <%= formatTime(fcast[i].to.date) %> <br/>
-					<%- fcast[i].temperature %> / <%= fcast[i].clouds %> /
-					<% if (fcast[i].precipitation != "no") { %>
-						<%= fcast[i].precipitation %><br/>
-					<% } else { %>
-					  Sin lluvias
-					<% } %>
-				</div>
-			</div>
-			<% } %>
-		</div>
-	</div>
-</div>
-
-<div id = "modalProvinces" class = "modal">
-	<div class = "modal-content collection">
-		<% for(var i=0; i < provinces.length; i++) { %>
-			<a href = "#!" class = "collection-item link link-simple" data-command = "CLIMA " data-query = "{province: provinces[<%= i %>]}"><%= ucwords(provinces[i].replace('_',' ').replace('_',' ').replace('_',' ').toLowerCase()) %></a>
-		<% }%>
 	</div>
 </div>
