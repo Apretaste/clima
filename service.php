@@ -623,8 +623,8 @@ class ClimaService extends ApretasteService
       return false;
     }
 
+    $ext = pathinfo($url, PATHINFO_EXTENSION);
     $sinfo = serialize($info);
-    $ext = 'jpg';
 
     if (stripos($sinfo, 'image/gif') !== false) {
       $ext = 'gif';
