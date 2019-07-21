@@ -1,10 +1,10 @@
 <div class = "container">
-     <div class = "row" style="padding-top: 15px;">
+     <div class = "row" style = "padding-top: 15px;">
         <nav class = "nav-center hide">
             <div class = "nav-wrapper blue-bg">
                 <!--Logo-->
-                <span class="brand-logo right">
-                    <i><b style="font-size:40px;">&nbsp; CLIMA</b></i>
+                <span class = "brand-logo right">
+                    <i><b style = "font-size:40px;">&nbsp; CLIMA</b></i>
                 </span>
                 <ul>
                     <li>
@@ -25,20 +25,26 @@
             </div>
         </div>
 
+        <div id = "modalOptions" class = "modal">
+            <div class = "modal-content collection">
+                    <a href = "#!" class = "collection-item" onclick = "apretaste.send({command:'CLIMA HURACAN',data:{}});"><i class = "material-icons left">my_location</i>Hurac&aacute;n</a>
+                    <a href = "#!" class = "collection-item" onclick = "apretaste.send({command:'CLIMA HURACAN',data:{}});"><i class = "material-icons left">satellite</i>Sat&eacute;lite</a>
+                    <a href = "#!" class = "collection-item" onclick = "apretaste.send({command:'CLIMA CARIBE',data:{}});"><i class = "material-icons left">cloud</i>Caribe</a>
+                    <a href = "#!" class = "collection-item" onclick = "apretaste.send({command:'CLIMA ATLANTICO',data:{}});"><i class = "material-icons left">public</i>Atl&aacute;ntico</a>
+                    <a href = "#!" class = "collection-item" onclick = "apretaste.send({command:'CLIMA POLVO',data:{}});"><i class = "material-icons left">cloud</i>Polvo del desierto</a>
+                    <a href = "#!" class = "collection-item" onclick = "apretaste.send({command:'CLIMA PRESION',data:{}});"><i class = "material-icons left">map</i>Presi&oacute;n superficial</a>
+            </div>
+            <div class = "modal-footer">
+                <a href = "#!" class = "modal-close waves-effect waves-green btn-flat">Cerrar</a>
+            </div>
+        </div>
+
          {{APP_TEMPLATE_CODE}}
 
-    </div>
-    <h2>Otras informaciones</h2>
-    <div class="row">
-        <div class="col s6 m6 l6 center-align" style="margin-bottom:5px;"><button class="btn waves-effect waves-light" onclick="apretaste.send({command:'CLIMA HURACAN',data:{}});">Hurac&aacute;n<i class = "material-icons left">my_location</i></button></div>
-        <div class="col s6 m6 l6 center-align" style="margin-bottom:5px;"><button class="btn waves-effect waves-light" onclick="apretaste.send({command:'CLIMA SATELITE',data:{}});">Sat&eacute;lite<i class = "material-icons left">satellite</i></button></div>
-        <div class="col s6 m6 l6 center-align" style="margin-bottom:5px;"><button class="btn waves-effect waves-light" onclick="apretaste.send({command:'CLIMA CARIBE',data:{}});">Caribe<i class = "material-icons left">cloud</i></button></div>
-        <div class="col s6 m6 l6 center-align" style="margin-bottom:5px;"><button class="btn waves-effect waves-light" onclick="apretaste.send({command:'CLIMA ATLANTICO',data:{}});">Atl&aacute;ntico<i class = "material-icons left">public</i></button></div>
-        <div class="col s6 m6 l6 center-align" style="margin-bottom:5px;"><button class="btn waves-effect waves-light" onclick="apretaste.send({command:'CLIMA POLVO',data:{}});">Polvo del desierto<i class = "material-icons left">cloud</i></button></div>
-        <div class="col s6 m6 l6 center-align" style="margin-bottom:5px;"><button class="btn waves-effect waves-light" onclick="apretaste.send({command:'CLIMA PRESION',data:{}});">Presi&oacute;n<i class = "material-icons left">map</i></button></div>
+         <div class = "fixed-action-btn">
+            <a class = "btn-floating btn-large grey darken-3 black-text" href = "#!" onclick = "showOptions();">
+                <i class = "material-icons">center_focus_strong</i>
+            </a>
+        </div>
     </div>
 </div>
-
-<button class="btn waves-effect waves-light" onclick="apretaste.send({command:'CLIMA_HURACAN',data:{}});">Hurac&aacute;n<i class = "material-icons left">my_location</i></button>
-<button class="btn waves-effect waves-light" onclick="apretaste.send({command:'CLIMA_HURACAN',data:{}});">Hurac&aacute;n</button>
-<button class="btn waves-effect waves-light" onclick="showModal('hola');">Hurac&aacute;n</button>
