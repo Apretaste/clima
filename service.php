@@ -373,6 +373,7 @@ class ClimaService extends ApretasteService
     }
 
     // create response
+    $this->response->setCache("hour");
     $this->response->setTemplate('image.ejs', ["title" => $title, "image" => basename("$image")], [$image]);
   }
 
