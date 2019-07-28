@@ -50,7 +50,7 @@ class ClimaService extends ApretasteService
     $dtz = new DateTimeZone("America/Havana"); //Your timezone
     $now = new DateTime(date("d-m-Y"), $dtz);
 
-    if ($this->request->input->data->query->province ?? null !== null) {
+    if (($this->request->input->data->query->province ?? null) !== null) {
       $txt = strtoupper(str_replace(" ", "_", $this->request->input->data->query->province));
       if (array_key_exists($txt, $province)) {
         $code = $province[$txt];
@@ -64,7 +64,6 @@ class ClimaService extends ApretasteService
       }
     }
     else {
-
       if ($this->request->person->province != null) {
         $code = $province[$this->request->person->province];
       }
