@@ -40,11 +40,27 @@
         </div>
 
          {{APP_TEMPLATE_CODE}}
+         <!--
+                  <div class = "fixed-action-btn">
+                     <a class = "btn-floating btn-large green darken-3 black-text" href = "#!" onclick = "showOptions();">
+                         <i class = "material-icons">center_focus_strong</i>
+                     </a>
+                 </div>
+         -->
 
-         <div class = "fixed-action-btn">
-            <a class = "btn-floating btn-large grey darken-3 black-text" href = "#!" onclick = "showOptions();">
-                <i class = "material-icons">center_focus_strong</i>
-            </a>
+        <div class = "fixed-action-btn">
+          <a class = "btn-floating btn-large green">
+            <i class = "large material-icons">center_focus_strong</i>
+          </a>
+          <ul>
+            <li> <a href = "#!" class = "btn-floating " onclick = "apretaste.send({command:'CLIMA',data:{}});"><i class = "material-icons left">weather</i>Tiempo</a></li>
+            <li> <a href = "#!" class = "btn-floating " onclick = "apretaste.send({command:'CLIMA HURACAN',data:{}});"><i class = "material-icons left">my_location</i>Hurac&aacute;n</a></li>
+            <li><a href = "#!" class = "btn-floating " onclick = "apretaste.send({command:'CLIMA HURACAN',data:{}});"><i class = "material-icons left">satellite</i>Sat&eacute;lite</a>
+            <li><a href = "#!" class = "btn-floating " onclick = "apretaste.send({command:'CLIMA CARIBE',data:{}});"><i class = "material-icons left">cloud</i>Caribe</a>
+            <li><a href = "#!" class = "btn-floating " onclick = "apretaste.send({command:'CLIMA ATLANTICO',data:{}});"><i class = "material-icons left">public</i>Atl&aacute;ntico</a>
+            <li><a href = "#!" class = "btn-floating " onclick = "apretaste.send({command:'CLIMA POLVO',data:{}});"><i class = "material-icons left">cloud</i>Polvo del desierto</a>
+            <li><a href = "#!" class = "btn-floating " onclick = "apretaste.send({command:'CLIMA PRESION',data:{}});"><i class = "material-icons left">map</i>Presi&oacute;n superficial</a>
+          </ul>
         </div>
-    </div>
+     </div>
 </div>
