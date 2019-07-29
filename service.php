@@ -53,7 +53,7 @@ class ClimaService extends ApretasteService
         $customProvince = $province[$this->request->person->province] ?? 'LA_HABANA'; // havana is default
         $customProvince = $this->request->input->data->query->province ?? $customProvince; // change if user select another
         $customProvince = strtoupper(str_replace(' ', '_', $customProvince)); // normalize the value
-        $code = $province[$customProvince];
+        $code = $province[$customProvince] ?? $province['LA_HABANA'];
 
         try {
             $weather = $owm->getWeather($code, $units, $lang);
