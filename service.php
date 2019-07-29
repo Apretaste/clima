@@ -2,6 +2,7 @@
 
 require_once __DIR__.'/vendor/autoload.php';
 
+use Apretaste\Core;
 use Cmfcmf\OpenWeatherMap;
 use Cmfcmf\OpenWeatherMap\Exception as OWMException;
 
@@ -595,11 +596,8 @@ class ClimaService extends ApretasteService
      */
     private function downloadAndPrepareImage($url)
     {
-        $di = \Phalcon\DI\FactoryDefault::getDefault();
-        $www_root = $di->get('path')['root'];
-
         // save image to the temp folder
-        $filePath = "$www_root/temp/".Utils::generateRandomHash(); //. ".jpg";
+        $filePath = Core::getTempDir().'/'.Utils::generateRandomHash();
         $info = [];
         $content = Utils::file_get_contents_curl($url, [], $info);
 
