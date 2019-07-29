@@ -1,14 +1,27 @@
-$(document).ready(function(){
+$(document).ready(function () {
   $('.fixed-action-btn').floatingActionButton({
     direction: 'top',
     hoverEnabled: false
   });
+
+  $(".link").attr('href', '#!');
+  $(".link-simple").click(function () {
+    var q = null;
+    eval('q = ' + $(this).attr('data-query'));
+    apretaste.send({
+      command: $(this).attr('data-command'),
+      data: {
+        query: q
+      }
+    });
+  });
+
 });
 
-function ucwords(str){
-    return(str+'').replace(/^(.)|\s(.)/g,function($1){
-        return $1.toUpperCase();
-    });
+function ucwords(str) {
+  return (str + '').replace(/^(.)|\s(.)/g, function ($1) {
+    return $1.toUpperCase();
+  });
 }
 
 function formatDate(dateStr) {
