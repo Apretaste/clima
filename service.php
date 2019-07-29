@@ -102,7 +102,13 @@ class ClimaService extends ApretasteService
             return;
         }
 
-        $this->response->setTemplate('basic.ejs', ['data' => $data, 'fcast' => $fCast, 'provinces' => array_keys($province)]);
+        $this->response->setTemplate('basic.ejs', [
+            'data'      => $data,
+            'fcast'     => $fCast,
+            'provinces' => array_keys($province)
+        ], array_map(static function ($value) {
+            return __DIR__."/icons/$value.png";
+        }, explode(',', '01d,02d,03d,04d,09d,10d,11d,50d,01n,02n,03n,04n,09n,10n,11n,50n')));
     }
 
     /**
@@ -203,7 +209,7 @@ class ClimaService extends ApretasteService
 
             case 'icon':
                 if (isset($icon[$text])) {
-                    return $icon[$text];
+                    return $text; //$icon[$text];
                 }
                 break;
 
