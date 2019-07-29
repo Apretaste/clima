@@ -107,7 +107,7 @@ class ClimaService extends ApretasteService
             'fcast'     => $fCast,
             'provinces' => array_keys($province)
         ], array_map(static function ($value) {
-            return __DIR__."/icons/$value.png";
+            return __DIR__."/icons/$value.jpg";
         }, explode(',', '01d,02d,03d,04d,09d,10d,11d,50d,01n,02n,03n,04n,09n,10n,11n,50n')));
     }
 
