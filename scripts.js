@@ -3,19 +3,6 @@ $(document).ready(function () {
     direction: 'top',
     hoverEnabled: false
   });
-
-  $(".link").attr('href', '#!');
-  $(".link-simple").click(function () {
-    var q = null;
-    eval('q = ' + $(this).attr('data-query'));
-    apretaste.send({
-      command: $(this).attr('data-command'),
-      data: {
-        query: q
-      }
-    });
-  });
-
 });
 
 function ucwords(str) {
