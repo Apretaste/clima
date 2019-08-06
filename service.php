@@ -259,7 +259,7 @@ class ClimaService extends ApretasteService
         }
 
         if ($url === false) {
-            $this->response->setCache('day');
+            //$this->response->setCache('day');
             $this->simpleMessage('No se pudo obtener la imagen del radar',
                 'No se pudo obtener la imagen del radar, intente m&aacute;s tarde'
             );
@@ -357,7 +357,7 @@ class ClimaService extends ApretasteService
         }
 
         // create response
-        $this->response->setCache('hour');
+       // $this->response->setCache('hour');
         $this->response->setTemplate('image.ejs', ['title' => $title, 'image' => basename("$image")], [$image]);
     }
 
