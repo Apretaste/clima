@@ -233,7 +233,8 @@ class ClimaService extends ApretasteService
     public function _satelite()
     {
         $url = 'http://images.intellicast.com/WxImages/Satellite/hicbsat.gif';
-        $this->commonImageResponse('Imagen del sat&eacute;lite', $url);
+        $this->response->setCache();
+        $this->commonImageResponse('Imagen del sat&eacute;lite', $url, 'satellite');
     }
 
     /**
@@ -276,7 +277,7 @@ class ClimaService extends ApretasteService
      */
     public function _temperatura()
     {
-        $this->commonImageResponse('An&aacute;lisis de la temperatura del mar (NOAA/NHC)', 'http://polar.ncep.noaa.gov/sst/ophi/nwatl_sst_ophi0.png');
+        $this->commonImageResponse('An&aacute;lisis de la temperatura del mar (NOAA/NHC)', 'http://polar.ncep.noaa.gov/sst/ophi/nwatl_sst_ophi0.png','public');
     }
 
     /**
@@ -285,7 +286,7 @@ class ClimaService extends ApretasteService
      */
     public function _superficie()
     {
-        $this->commonImageResponse('An&aacute;lisis de superficie del Atl&aacute;ntico y el Caribe (NOAA/NHC)', 'http://dadecosurf.com/images/tanal.1.gif');
+        $this->commonImageResponse('An&aacute;lisis de superficie del Atl&aacute;ntico y el Caribe (NOAA/NHC)', 'http://dadecosurf.com/images/tanal.1.gif','cloud');
     }
 
     /**
@@ -319,7 +320,7 @@ class ClimaService extends ApretasteService
      */
     public function _presion()
     {
-        $this->commonImageResponse('Presi&oacute;n superficial', 'http://www.nhc.noaa.gov/tafb_latest/WATL_latest.gif');
+        $this->commonImageResponse('Presi&oacute;n superficial', 'http://www.nhc.noaa.gov/tafb_latest/WATL_latest.gif','map');
     }
 
     /**
@@ -327,8 +328,8 @@ class ClimaService extends ApretasteService
      */
     public function _huracan()
     {
-        $this->commonImageResponse('Cono de trayectoria huracan',
-            'http://images.intellicast.com/WxImages/CustomGraphic/HurTrack3.gif'
+        $this->commonImageResponse(html_entity_decode('Cono de trayectoria hurac&aacute;n'),
+            'http://images.intellicast.com/WxImages/CustomGraphic/HurTrack3.gif', 'my_location'
         );
     }
 
@@ -338,10 +339,12 @@ class ClimaService extends ApretasteService
      * @param string $title
      * @param string $url
      *
+     * @param string $floatIcon
+     *
      * @return void
      * @author kuma
      */
-    private function commonImageResponse($title, $url)
+    private function commonImageResponse($title, $url, $floatIcon = 'cloud_queue'): void
     {
         $this->response->setLayout('clima.ejs');
 
@@ -357,8 +360,8 @@ class ClimaService extends ApretasteService
         }
 
         // create response
-       // $this->response->setCache('hour');
-        $this->response->setTemplate('image.ejs', ['title' => $title, 'image' => basename("$image")], [$image]);
+        $this->response->setCache();
+        $this->response->setTemplate('image.ejs', ['title' => $title, 'image' => basename("$image"), 'floatIcon' => $floatIcon], [$image]);
     }
 
     /**
