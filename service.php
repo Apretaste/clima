@@ -106,6 +106,7 @@ class ClimaService extends ApretasteService
         $this->response->setTemplate('basic.ejs', [
             'data'      => $data,
             'fcast'     => $fCast,
+            'floatIcon' => 'cloud_queue',
             'provinces' => array_keys($province)
         ]);
     }
