@@ -330,7 +330,7 @@ class ClimaService extends ApretasteService
     public function _huracan()
     {
         $this->commonImageResponse(html_entity_decode('Cono de trayectoria hurac&aacute;n'),
-            'http://images.intellicast.com/WxImages/CustomGraphic/HurTrack3.gif', 'my_location'
+            'http://images.intellicast.com/WxImages/CustomGraphic/HurTrack1.gif', 'my_location'
         );
     }
 
