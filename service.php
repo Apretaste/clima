@@ -361,7 +361,7 @@ class ClimaService extends ApretasteService
         }
 
         // create response
-        $this->response->setCache();
+        //$this->response->setCache();
         $this->response->setTemplate('image.ejs', ['title' => $title, 'image' => basename("$image"), 'floatIcon' => $floatIcon], [$image]);
     }
 
