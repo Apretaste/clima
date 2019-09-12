@@ -4,7 +4,7 @@ use Apretaste\Core;
 use Cmfcmf\OpenWeatherMap;
 use Cmfcmf\OpenWeatherMap\Exception as OWMException;
 
-require_once __DIR__.'/weatherCache.php';
+//require_once __DIR__.'/weatherCache.php';
 
 class ClimaService extends ApretasteService
 {
@@ -20,10 +20,10 @@ class ClimaService extends ApretasteService
     {
         $this->response->setLayout('clima.ejs');
 
-        $cache = new OWMCache();
+       /* $cache = new OWMCache();
         $cache->setTempPath(Utils::getTempDir());
-
-        $owm = new OpenWeatherMap($this->apiKey, null, $cache, 3600 * 4); //Cache in seconds
+*/
+        $owm = new OpenWeatherMap($this->apiKey, null, null, 3600 * 4); //Cache in seconds
         $lang = 'es';
         $units = 'metric';
 
