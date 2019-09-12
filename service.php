@@ -4,6 +4,9 @@ use Apretaste\Core;
 use Cmfcmf\OpenWeatherMap;
 use Cmfcmf\OpenWeatherMap\Exception as OWMException;
 
+use Http\Factory\Guzzle\RequestFactory;
+use Http\Adapter\Guzzle6\Client as GuzzleAdapter;
+
 //require_once __DIR__.'/weatherCache.php';
 
 class ClimaService extends ApretasteService
@@ -23,7 +26,10 @@ class ClimaService extends ApretasteService
        /* $cache = new OWMCache();
         $cache->setTempPath(Utils::getTempDir());
 */
-        $owm = new OpenWeatherMap($this->apiKey, null, null,null,3600 * 4 ); //Cache in seconds
+        $httpRequestFactory = new RequestFactory();
+        $httpClient = GuzzleAdapter::createWithConfig([]);
+
+        $owm = new OpenWeatherMap($this->apiKey, $httpClient, $httpRequestFactory,null,3600 * 4 ); //Cache in seconds
         $lang = 'es';
         $units = 'metric';
 
