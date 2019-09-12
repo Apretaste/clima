@@ -23,7 +23,7 @@ class ClimaService extends ApretasteService
        /* $cache = new OWMCache();
         $cache->setTempPath(Utils::getTempDir());
 */
-        $owm = new OpenWeatherMap($this->apiKey, null, null, 3600 * 4); //Cache in seconds
+        $owm = new OpenWeatherMap($this->apiKey, null, null,null,3600 * 4 ); //Cache in seconds
         $lang = 'es';
         $units = 'metric';
 
