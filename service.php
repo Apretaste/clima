@@ -1,7 +1,5 @@
 <?php
 
-require_once __DIR__.'/vendor/autoload.php';
-
 use Apretaste\Core;
 use Cmfcmf\OpenWeatherMap;
 use Cmfcmf\OpenWeatherMap\Exception as OWMException;
