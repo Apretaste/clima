@@ -46,7 +46,7 @@ class ClimaService extends ApretasteService
             'CAMAGUEY'            => '3566067',
             'LAS_TUNAS'           => '3550598',
             'HOLGUIN'             => '3556969',
-            'GRANMA'              => '3547600',
+            'GRANMA'              => '3567597',
             'SANTIAGO_DE_CUBA'    => '3536729',
             'GUANTANAMO'          => '3557689',
             'ISLA_DE_LA_JUVENTUD' => '3545867', // Nueva Gerona
