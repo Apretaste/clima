@@ -106,6 +106,8 @@ class ClimaService extends ApretasteService
 			'floatIcon' => 'cloud_queue',
 			'provinces' => array_keys($province)
 		]);
+
+		Challenges::complete("view-clima", $this->request->person->id);
 	}
 
 	/**
