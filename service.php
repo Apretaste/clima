@@ -588,7 +588,7 @@ class Service
 		// save image to the temp folder
 		$filePath = TEMP_PATH . Utils::randomHash();
 		$info = [];
-		$content = Crawler::get($url, [], $info);
+		$content = Crawler::get($url, 'GET', null, [], [], $info);
 
 		if ($content === false) {
 			return false;
