@@ -21,7 +21,7 @@ function formatDate(dateStr) {
   var date = new Date(dateStr);
   var year = date.getFullYear();
   var month = pad(1 + date.getMonth(), 2);
-  var day = pad(date.getDay(), 2);
+  var day = pad(date.getDate(), 2);
   return day + '/' + month + '/' + year;
 }
 
