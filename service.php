@@ -291,7 +291,7 @@ class Service
 			return;
 		}
 
-		$this->commonImageResponse('Imagen del radar', 'http://www.met.inf.cu/Radar/NacComp200Km.gif', '', $response);
+		$this->commonImageResponse('Imagen del radar', 'http://www.met.inf.cu/Radar/NacComp200Km.gif', 'cloud', $response);
 	}
 
 	/**
@@ -317,7 +317,7 @@ class Service
 	 */
 	public function _atlantico(Request $request, Response &$response)
 	{
-		$this->commonImageResponse('An&aacute;lisis del estado del Atl&aacute;ntico (NOAA/NHC)', 'http://www.nhc.noaa.gov/tafb_latest/atlsea_latestBW.gif', '', $response);
+		$this->commonImageResponse('An&aacute;lisis del estado del Atl&aacute;ntico (NOAA/NHC)', 'http://www.nhc.noaa.gov/tafb_latest/atlsea_latestBW.gif', 'cloud', $response);
 	}
 
 	/**
@@ -325,7 +325,7 @@ class Service
 	 */
 	public function _caribe(Request $request, Response &$response)
 	{
-		$this->commonImageResponse('Imagen del Caribe (Weather Channel)', 'http://sirocco.accuweather.com/sat_mosaic_640x480_public/ei/isaecar.gif', '', $response);
+		$this->commonImageResponse('Imagen del Caribe (Weather Channel)', 'http://sirocco.accuweather.com/sat_mosaic_640x480_public/ei/isaecar.gif', 'cloud', $response);
 	}
 
 	/**
@@ -334,7 +334,7 @@ class Service
 	 */
 	public function _polvo(Request $request, Response &$response)
 	{
-		$this->commonImageResponse('Imagen del Polvo del desierto', 'http://tropic.ssec.wisc.edu/real-time/sal/splitEW.jpg', '', $response);
+		$this->commonImageResponse('Imagen del Polvo del desierto', 'http://tropic.ssec.wisc.edu/real-time/sal/splitEW.jpg', 'cloud', $response);
 	}
 
 
