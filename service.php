@@ -317,7 +317,7 @@ class Service
 	 */
 	public function _atlantico(Request $request, Response &$response)
 	{
-		$this->commonImageResponse('An&aacute;lisis del estado del Atl&aacute;ntico (NOAA/NHC)', 'http://www.nhc.noaa.gov/tafb_latest/atlsea_latestBW.gif', 'cloud', $response);
+		$this->commonImageResponse('An&aacute;lisis del estado del Atl&aacute;ntico (NOAA/NHC)', 'http://www.nhc.noaa.gov/tafb_latest/atlsea_latestBW.gif', 'public', $response);
 	}
 
 	/**
