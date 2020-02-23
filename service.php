@@ -6,7 +6,6 @@ use Framework\Alert;
 use Framework\Crawler;
 use Http\Factory\Guzzle\RequestFactory;
 use Http\Adapter\Guzzle6\Client as GuzzleAdapter;
-
 use Apretaste\Challenges;
 use Apretaste\Request;
 use Apretaste\Response;
@@ -256,7 +255,7 @@ class Service
 	{
 		$url = 'http://images.intellicast.com/WxImages/Satellite/hicbsat.gif';
 		$response->setCache();
-		$this->commonImageResponse('Imagen del sat&eacute;lite', $url, 'satellite');
+		$this->commonImageResponse('Imagen del sat&eacute;lite', $url, 'satellite', $response);
 	}
 
 	/**
@@ -275,7 +274,7 @@ class Service
 		$url = false;
 
 		foreach ($radares as $urlx) {
-			if ($this->getUrl($urlx) !== false) {
+			if (Crawler::get($urlx) !== false) {
 				$url = $urlx;
 				break;
 			}
@@ -291,7 +290,7 @@ class Service
 			return;
 		}
 
-		$this->commonImageResponse('Imagen del radar', 'http://www.met.inf.cu/Radar/NacComp200Km.gif', '', $response);
+		$this->commonImageResponse('Imagen del radar', 'http://www.met.inf.cu/Radar/NacComp200Km.gif', 'cloud', $response);
 	}
 
 	/**
@@ -317,7 +316,7 @@ class Service
 	 */
 	public function _atlantico(Request $request, Response &$response)
 	{
-		$this->commonImageResponse('An&aacute;lisis del estado del Atl&aacute;ntico (NOAA/NHC)', 'http://www.nhc.noaa.gov/tafb_latest/atlsea_latestBW.gif', '', $response);
+		$this->commonImageResponse('An&aacute;lisis del estado del Atl&aacute;ntico (NOAA/NHC)', 'http://www.nhc.noaa.gov/tafb_latest/atlsea_latestBW.gif', 'public', $response);
 	}
 
 	/**
@@ -325,7 +324,7 @@ class Service
 	 */
 	public function _caribe(Request $request, Response &$response)
 	{
-		$this->commonImageResponse('Imagen del Caribe (Weather Channel)', 'http://sirocco.accuweather.com/sat_mosaic_640x480_public/ei/isaecar.gif', '', $response);
+		$this->commonImageResponse('Imagen del Caribe (Weather Channel)', 'http://sirocco.accuweather.com/sat_mosaic_640x480_public/ei/isaecar.gif', 'cloud', $response);
 	}
 
 	/**
@@ -334,7 +333,7 @@ class Service
 	 */
 	public function _polvo(Request $request, Response &$response)
 	{
-		$this->commonImageResponse('Imagen del Polvo del desierto', 'http://tropic.ssec.wisc.edu/real-time/sal/splitEW.jpg', '', $response);
+		$this->commonImageResponse('Imagen del Polvo del desierto', 'http://tropic.ssec.wisc.edu/real-time/sal/splitEW.jpg', 'cloud', $response);
 	}
 
 
@@ -364,16 +363,13 @@ class Service
 	 *
 	 * @param string $title
 	 * @param string $url
-	 *
 	 * @param string $floatIcon
-	 *
 	 * @param \Apretaste\Response $response
-	 *
 	 * @return void
 	 * @throws \Framework\Alert
 	 * @author kuma
 	 */
-	private function commonImageResponse($title, $url, $floatIcon = 'cloud_queue', Response &$response = null): void
+	private function commonImageResponse($title, $url, $floatIcon = 'cloud_queue', Response &$response): void
 	{
 		$response->setLayout('clima.ejs');
 
@@ -382,13 +378,13 @@ class Service
 
 		if ($image === false) {
 			$response->setTemplate('message.ejs', [
-					'header' => html_entity_decode('Hubo problemas al atender tu solicitud'),
-					'icon' => '',
-					'text' => html_entity_decode("No hemos podido resolver su solicitud: <b>{$title}</b>. Intente m&aacute;s tarde y si el problema persiste contacta con el soporte t&eacute;cnico."),
-					'button' => [
-							'href' => 'clima',
-							'caption' => 'Regresar',
-					]
+				'header' => html_entity_decode('Hubo problemas al atender tu solicitud'),
+				'icon' => '',
+				'text' => html_entity_decode("No hemos podido resolver su solicitud: <b>{$title}</b>. Intente m&aacute;s tarde y si el problema persiste contacta con el soporte t&eacute;cnico."),
+				'button' => [
+					'href' => 'clima',
+					'caption' => 'Regresar',
+				]
 			]);
 			return;
 		}
@@ -576,52 +572,6 @@ class Service
 	}
 
 	/**
-	 * Remote get contents
-	 *
-	 * @param $url
-	 * @param array $info
-	 *
-	 * @return mixed
-	 */
-	private function getUrl($url, &$info = [])
-	{
-		$url = str_replace('//', '/', $url);
-		$url = str_replace('http:/', 'http://', $url);
-		$url = str_replace('https:/', 'https://', $url);
-
-		$ch = curl_init();
-
-		curl_setopt($ch, CURLOPT_URL, $url);
-
-		$default_headers = [
-			'Cache-Control' => 'max-age=0',
-			'Origin' => "{$url}",
-			'User-Agent' => 'Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/36.0.1985.125 Safari/537.36',
-			'Content-Type' => 'application/x-www-form-urlencoded',
-		];
-
-		$hhs = [];
-		foreach ($default_headers as $key => $val) {
-			$hhs[] = "$key: $val";
-		}
-
-		curl_setopt($ch, CURLOPT_HTTPHEADER, $hhs);
-		curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
-		curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
-
-		$html = curl_exec($ch);
-		$info = curl_getinfo($ch);
-
-		if (isset($info['redirect_url']) && $info['redirect_url'] != $url && !empty($info['redirect_url'])) {
-			return $this->getUrl($info['redirect_url'], $info);
-		}
-
-		curl_close($ch);
-
-		return $html;
-	}
-
-	/**
 	 * Download, resize and optimize the image
 	 *
 	 * @param String $url url of the image
@@ -634,7 +584,7 @@ class Service
 		// save image to the temp folder
 		$filePath = TEMP_PATH . Utils::randomHash();
 		$info = [];
-		$content = Crawler::get($url, [], $info);
+		$content = Crawler::get($url, 'GET', null, [], [], $info);
 
 		if ($content === false) {
 			return false;
@@ -660,7 +610,7 @@ class Service
 		file_put_contents($filePath, $content);
 
 		$type = $this->getFileType($filePath);
-		if (strtolower(trim(substr($type, 0, 6) != 'image/'))) {
+		if (strtolower(trim(strpos($type, 'image/') !== 0))) {
 			return false;
 		}
 
