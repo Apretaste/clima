@@ -12,7 +12,7 @@ use Apretaste\Request;
 use Apretaste\Response;
 use Framework\Utils;
 
-class Service 
+class Service
 {
 	public $apiKey = 'fdad9949d0a347811e8b84867ccd9707';
 
@@ -28,26 +28,26 @@ class Service
 		$httpRequestFactory = new RequestFactory();
 		$httpClient = GuzzleAdapter::createWithConfig([]);
 
-		$owm = new OpenWeatherMap($this->apiKey, $httpClient, $httpRequestFactory,null,3600 * 4 ); //Cache in seconds
+		$owm = new OpenWeatherMap($this->apiKey, $httpClient, $httpRequestFactory, null, 3600 * 4); //Cache in seconds
 		$lang = 'es';
 		$units = 'metric';
 
 		$province = [
-			'PINAR_DEL_RIO'       => '3544091',
-			'LA_HABANA'           => '3553478',
-			'ARTEMISA'            => '3568312',
-			'MAYABEQUE'           => '3539560', //San Jose de las Lajas
-			'MATANZAS'            => '3547398',
-			'VILLA_CLARA'         => '3537906', //Santa Clara
-			'CIENFUEGOS'          => '3564124',
-			'SANCTI_SPIRITUS'     => '3540667',
-			'CIEGO_DE_AVILA'      => '3564178',
-			'CAMAGUEY'            => '3566067',
-			'LAS_TUNAS'           => '3550598',
-			'HOLGUIN'             => '3556969',
-			'GRANMA'              => '3567597',
-			'SANTIAGO_DE_CUBA'    => '3536729',
-			'GUANTANAMO'          => '3557689',
+			'PINAR_DEL_RIO' => '3544091',
+			'LA_HABANA' => '3553478',
+			'ARTEMISA' => '3568312',
+			'MAYABEQUE' => '3539560', //San Jose de las Lajas
+			'MATANZAS' => '3547398',
+			'VILLA_CLARA' => '3537906', //Santa Clara
+			'CIENFUEGOS' => '3564124',
+			'SANCTI_SPIRITUS' => '3540667',
+			'CIEGO_DE_AVILA' => '3564178',
+			'CAMAGUEY' => '3566067',
+			'LAS_TUNAS' => '3550598',
+			'HOLGUIN' => '3556969',
+			'GRANMA' => '3567597',
+			'SANTIAGO_DE_CUBA' => '3536729',
+			'GUANTANAMO' => '3557689',
 			'ISLA_DE_LA_JUVENTUD' => '3545867', // Nueva Gerona
 		];
 
@@ -64,19 +64,19 @@ class Service
 			$forecast = $owm->getWeatherForecast($code, $units, $lang, '', 1);
 
 			$data = [
-				'temperature'   => $weather->temperature->getFormatted(),
+				'temperature' => $weather->temperature->getFormatted(),
 				'windDirection' => $this->translate('direction', $weather->wind->direction->getDescription()),
-				'windSpeed'     => $weather->wind->speed->getFormatted(),
+				'windSpeed' => $weather->wind->speed->getFormatted(),
 				'precipitation' => $this->translate('precipitation', $weather->precipitation->getDescription()),
-				'humidity'      => $weather->humidity->getFormatted(),
-				'pressure'      => $weather->pressure->getFormatted(),
-				'sunrise'       => $date = (new DateTime('@'.$weather->sun->rise->getTimestamp()))->setTimezone($dtz)->format('h:m a'),
-				'sunset'        => $date = (new DateTime('@'.$weather->sun->set->getTimestamp()))->setTimezone($dtz)->format('h:m a'),
-				'clouds'        => $this->translate('clouds', $weather->clouds->getDescription()),
-				'lastUpdate'    => $date = (new DateTime('@'.$weather->lastUpdate->getTimestamp()))->setTimezone($dtz)->format('h:m d/M/Y'),
-				'city'          => $weather->city->name,
-				'now'           => $now->format('d').' de '.$this->translate('month', $now->format('F')).' del '.$now->format('Y'),
-				'icon'          => $this->translate('icon', $weather->weather->icon),//$this->pathToService.'/images/'.$weather->weather->icon.'.png'
+				'humidity' => $weather->humidity->getFormatted(),
+				'pressure' => $weather->pressure->getFormatted(),
+				'sunrise' => $date = (new DateTime('@'.$weather->sun->rise->getTimestamp()))->setTimezone($dtz)->format('h:m a'),
+				'sunset' => $date = (new DateTime('@'.$weather->sun->set->getTimestamp()))->setTimezone($dtz)->format('h:m a'),
+				'clouds' => $this->translate('clouds', $weather->clouds->getDescription()),
+				'lastUpdate' => $date = (new DateTime('@'.$weather->lastUpdate->getTimestamp()))->setTimezone($dtz)->format('h:m d/M/Y'),
+				'city' => $weather->city->name,
+				'now' => $now->format('d').' de '.$this->translate('month', $now->format('F')).' del '.$now->format('Y'),
+				'icon' => $this->translate('icon', $weather->weather->icon),//$this->pathToService.'/images/'.$weather->weather->icon.'.png'
 			];
 
 			if ($data['city'] === 'Havana') {
@@ -86,12 +86,12 @@ class Service
 			$fCast = [];
 			foreach ($forecast as $w) {
 				$fCast[] = [
-					'from'          => $date = (new DateTime('@'.$w->time->from->getTimestamp()))->setTimezone($dtz),
-					'to'            => $date = (new DateTime('@'.$w->time->to->getTimestamp()))->setTimezone($dtz),
-					'clouds'        => $this->translate('clouds', $w->clouds->getDescription()),
-					'temperature'   => $w->temperature->getFormatted(),
+					'from' => $date = (new DateTime('@'.$w->time->from->getTimestamp()))->setTimezone($dtz),
+					'to' => $date = (new DateTime('@'.$w->time->to->getTimestamp()))->setTimezone($dtz),
+					'clouds' => $this->translate('clouds', $w->clouds->getDescription()),
+					'temperature' => $w->temperature->getFormatted(),
 					'precipitation' => $this->translate('precipitation', $w->precipitation->getDescription()),
-					'icon'          => $this->translate('icon', $w->weather->icon),
+					'icon' => $this->translate('icon', $w->weather->icon),
 				];
 			}
 		} catch (OWMException $e) {
@@ -99,10 +99,10 @@ class Service
 			//$alert->post();
 			$response->setTemplate('message.ejs', [
 					'header' => html_entity_decode('Error en peticion'),
-					'icon'   => '',
-					'text'   => html_entity_decode('Lo siento pero hemos tenido un error inesperado. Enviamos una peticion para corregirlo. Por favor intente nuevamente mas tarde.'),
+					'icon' => '',
+					'text' => html_entity_decode('Lo siento pero hemos tenido un error inesperado. Enviamos una peticion para corregirlo. Por favor intente nuevamente mas tarde.'),
 					'button' => [
-							'href'    => 'CLIMA',
+							'href' => 'CLIMA',
 							'caption' => 'Regresar',
 					]
 			]);
@@ -112,10 +112,10 @@ class Service
 
 			$response->setTemplate('message.ejs', [
 					'header' => html_entity_decode('Error en peticion'),
-					'icon'   => '',
-					'text'   => html_entity_decode('Lo siento pero hemos tenido un error inesperado. Enviamos una peticion para corregirlo. Por favor intente nuevamente mas tarde.'),
+					'icon' => '',
+					'text' => html_entity_decode('Lo siento pero hemos tenido un error inesperado. Enviamos una peticion para corregirlo. Por favor intente nuevamente mas tarde.'),
 					'button' => [
-							'href'    => 'CLIMA',
+							'href' => 'CLIMA',
 							'caption' => 'Regresar',
 					]
 			]);
@@ -124,8 +124,8 @@ class Service
 		}
 
 		$response->setTemplate('basic.ejs', [
-			'data'      => $data,
-			'fcast'     => $fCast,
+			'data' => $data,
+			'fcast' => $fCast,
 			'floatIcon' => 'cloud_queue',
 			'provinces' => array_keys($province)
 		]);
@@ -144,34 +144,33 @@ class Service
 
 	public function translate(String $type, String $text): string
 	{
-
 		$clouds = [
-			'clear sky'        => 'Cielo despejado',
+			'clear sky' => 'Cielo despejado',
 			'scattered clouds' => 'Nubes dispersas',
-			'few clouds'       => 'Pocas nubes',
-			'broken clouds'    => 'Nubes fragmentadas',
-			'overcast clouds'  => 'Nublado',
+			'few clouds' => 'Pocas nubes',
+			'broken clouds' => 'Nubes fragmentadas',
+			'overcast clouds' => 'Nublado',
 		];
 
 		$direction = [
-			'Southwest'       => 'Suroeste',
-			'SouthEast'       => 'Sureste',
-			'Northwest'       => 'Noroeste',
-			'NorthEast'       => 'Noreste',
-			'East'            => 'Este',
-			'South'           => 'Sur',
-			'North'           => 'Norte',
-			'West'            => 'Oeste',
+			'Southwest' => 'Suroeste',
+			'SouthEast' => 'Sureste',
+			'Northwest' => 'Noroeste',
+			'NorthEast' => 'Noreste',
+			'East' => 'Este',
+			'South' => 'Sur',
+			'North' => 'Norte',
+			'West' => 'Oeste',
 			'North-northeast' => 'Norte-noreste',
 			'North-northwest' => 'Norte-noroeste',
 			'South-southeast' => 'Sur-sureste',
 			'South-southwest' => 'Sur-suroeste',
-			'West-southwest'  => 'Oeste-noroeste',
-			'West-northwest'  => 'Oeste-suroeste',
-			'East-southeast'  => 'Este-sureste',
-			'East-southwest'  => 'Este-suroeste',
-			'East-northeast'  => 'Este-noreste',
-			'East-northwest'  => 'Este-noroeste',
+			'West-southwest' => 'Oeste-noroeste',
+			'West-northwest' => 'Oeste-suroeste',
+			'East-southeast' => 'Este-sureste',
+			'East-southwest' => 'Este-suroeste',
+			'East-northeast' => 'Este-noreste',
+			'East-northwest' => 'Este-noroeste',
 		];
 
 		$icon = [
@@ -194,18 +193,18 @@ class Service
 		];
 
 		$month = [
-			'January'   => 'Enero',
-			'February'  => 'Febrero',
-			'March'     => 'Marzo',
-			'April'     => 'Abril',
-			'May'       => 'Mayo',
-			'June'      => 'Junio',
-			'July'      => 'Julio',
-			'August'    => 'Agosto',
+			'January' => 'Enero',
+			'February' => 'Febrero',
+			'March' => 'Marzo',
+			'April' => 'Abril',
+			'May' => 'Mayo',
+			'June' => 'Junio',
+			'July' => 'Julio',
+			'August' => 'Agosto',
 			'September' => 'Septiembre',
-			'October'   => 'Octubre',
-			'November'  => 'Noviembre',
-			'December'  => 'Diciembre',
+			'October' => 'Octubre',
+			'November' => 'Noviembre',
+			'December' => 'Diciembre',
 		];
 
 		switch ($type) {
@@ -284,7 +283,8 @@ class Service
 
 		if ($url === false) {
 			//$response->setCache('day');
-			$this->simpleMessage('No se pudo obtener la imagen del radar',
+			$this->simpleMessage(
+				'No se pudo obtener la imagen del radar',
 				'No se pudo obtener la imagen del radar, intente m&aacute;s tarde'
 			);
 
@@ -300,7 +300,7 @@ class Service
 	 */
 	public function _temperatura(Request $request, Response &$response)
 	{
-		$this->commonImageResponse('An&aacute;lisis de la temperatura del mar (NOAA/NHC)', 'http://polar.ncep.noaa.gov/sst/ophi/nwatl_sst_ophi0.png','public', $response);
+		$this->commonImageResponse('An&aacute;lisis de la temperatura del mar (NOAA/NHC)', 'http://polar.ncep.noaa.gov/sst/ophi/nwatl_sst_ophi0.png', 'public', $response);
 	}
 
 	/**
@@ -309,7 +309,7 @@ class Service
 	 */
 	public function _superficie(Request $request, Response &$response)
 	{
-		$this->commonImageResponse('An&aacute;lisis de superficie del Atl&aacute;ntico y el Caribe (NOAA/NHC)', 'http://dadecosurf.com/images/tanal.1.gif','cloud', $response);
+		$this->commonImageResponse('An&aacute;lisis de superficie del Atl&aacute;ntico y el Caribe (NOAA/NHC)', 'http://dadecosurf.com/images/tanal.1.gif', 'cloud', $response);
 	}
 
 	/**
@@ -343,7 +343,7 @@ class Service
 	 */
 	public function _presion(Request $request, Response &$response)
 	{
-		$this->commonImageResponse('Presi&oacute;n superficial', 'http://www.nhc.noaa.gov/tafb_latest/WATL_latest.gif','map', $response);
+		$this->commonImageResponse('Presi&oacute;n superficial', 'http://www.nhc.noaa.gov/tafb_latest/WATL_latest.gif', 'map', $response);
 	}
 
 	/**
@@ -351,18 +351,21 @@ class Service
 	 */
 	public function _huracan(Request $request, Response &$response)
 	{
-		$this->commonImageResponse(html_entity_decode('Cono de trayectoria hurac&aacute;n'),
-			'http://images.intellicast.com/WxImages/CustomGraphic/HurTrack1.gif', 'my_location', $response
+		$this->commonImageResponse(
+			html_entity_decode('Cono de trayectoria hurac&aacute;n'),
+			'http://images.intellicast.com/WxImages/CustomGraphic/HurTrack1.gif',
+			'my_location',
+			$response
 		);
 	}
 
 	/**
 	 * Common response
 	 *
-	 * @param string              $title
-	 * @param string              $url
+	 * @param string $title
+	 * @param string $url
 	 *
-	 * @param string              $floatIcon
+	 * @param string $floatIcon
 	 *
 	 * @param \Apretaste\Response $response
 	 *
@@ -380,10 +383,10 @@ class Service
 		if ($image === false) {
 			$response->setTemplate('message.ejs', [
 					'header' => html_entity_decode('Hubo problemas al atender tu solicitud'),
-					'icon'   => '',
-					'text'   => html_entity_decode("No hemos podido resolver su solicitud: <b>{$title}</b>. Intente m&aacute;s tarde y si el problema persiste contacta con el soporte t&eacute;cnico."),
+					'icon' => '',
+					'text' => html_entity_decode("No hemos podido resolver su solicitud: <b>{$title}</b>. Intente m&aacute;s tarde y si el problema persiste contacta con el soporte t&eacute;cnico."),
 					'button' => [
-							'href'    => 'clima',
+							'href' => 'clima',
 							'caption' => 'Regresar',
 					]
 			]);
@@ -565,8 +568,7 @@ class Service
 			116 => 9925,
 			113 => 9728,
 		];
-		if (!isset($images[$code])) //	return "{$this->pathToService}/images/wsymbol_0001_sunny.jpg";
-		{
+		if (!isset($images[$code])) { //	return "{$this->pathToService}/images/wsymbol_0001_sunny.jpg";
 			return 9728;
 		}
 
@@ -576,7 +578,7 @@ class Service
 	/**
 	 * Remote get contents
 	 *
-	 * @param       $url
+	 * @param $url
 	 * @param array $info
 	 *
 	 * @return mixed
@@ -593,9 +595,9 @@ class Service
 
 		$default_headers = [
 			'Cache-Control' => 'max-age=0',
-			'Origin'        => "{$url}",
-			'User-Agent'    => 'Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/36.0.1985.125 Safari/537.36',
-			'Content-Type'  => 'application/x-www-form-urlencoded',
+			'Origin' => "{$url}",
+			'User-Agent' => 'Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/36.0.1985.125 Safari/537.36',
+			'Content-Type' => 'application/x-www-form-urlencoded',
 		];
 
 		$hhs = [];
