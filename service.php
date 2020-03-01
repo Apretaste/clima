@@ -6,7 +6,6 @@ use Framework\Alert;
 use Framework\Crawler;
 use Http\Factory\Guzzle\RequestFactory;
 use Http\Adapter\Guzzle6\Client as GuzzleAdapter;
-
 use Apretaste\Challenges;
 use Apretaste\Request;
 use Apretaste\Response;
@@ -364,11 +363,8 @@ class Service
 	 *
 	 * @param string $title
 	 * @param string $url
-	 *
 	 * @param string $floatIcon
-	 *
 	 * @param \Apretaste\Response $response
-	 *
 	 * @return void
 	 * @throws \Framework\Alert
 	 * @author kuma
@@ -382,13 +378,13 @@ class Service
 
 		if ($image === false) {
 			$response->setTemplate('message.ejs', [
-					'header' => html_entity_decode('Hubo problemas al atender tu solicitud'),
-					'icon' => '',
-					'text' => html_entity_decode("No hemos podido resolver su solicitud: <b>{$title}</b>. Intente m&aacute;s tarde y si el problema persiste contacta con el soporte t&eacute;cnico."),
-					'button' => [
-							'href' => 'clima',
-							'caption' => 'Regresar',
-					]
+				'header' => html_entity_decode('Hubo problemas al atender tu solicitud'),
+				'icon' => '',
+				'text' => html_entity_decode("No hemos podido resolver su solicitud: <b>{$title}</b>. Intente m&aacute;s tarde y si el problema persiste contacta con el soporte t&eacute;cnico."),
+				'button' => [
+					'href' => 'clima',
+					'caption' => 'Regresar',
+				]
 			]);
 			return;
 		}
