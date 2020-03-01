@@ -26,8 +26,8 @@ class Service
 
 		$httpRequestFactory = new RequestFactory();
 		$httpClient = GuzzleAdapter::createWithConfig([]);
-
-		$owm = new OpenWeatherMap($this->apiKey, $httpClient, $httpRequestFactory, null, 3600 * 4); //Cache in seconds
+		$apiKey = Config::pick('openweather')['apikey'];
+		$owm = new OpenWeatherMap($apiKey, $httpClient, $httpRequestFactory, null, 3600 * 4); //Cache in seconds
 		$lang = 'es';
 		$units = 'metric';
 
