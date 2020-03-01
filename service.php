@@ -10,11 +10,10 @@ use Apretaste\Challenges;
 use Apretaste\Request;
 use Apretaste\Response;
 use Framework\Utils;
+use Framework\Config;
 
 class Service
 {
-	public $apiKey = 'fdad9949d0a347811e8b84867ccd9707';
-
 	/**
 	 * Gets the most current weather forecast for Cuba
 	 *
