@@ -18,19 +18,21 @@ function ucwords(str) {
 }
 
 function formatDate(dateStr) {
-  var date = new Date(dateStr);
+  return moment(dateStr).format('DD/MM/YYYY');
+  /*var date = new Date(dateStr);
   var year = date.getFullYear();
   var month = pad(1 + date.getMonth(), 2);
   var day = pad(date.getDay(), 2);
-  return day + '/' + month + '/' + year;
+  return day + '/' + month + '/' + year;*/
 }
 
 function formatTime(dateStr) {
-  var date = new Date(dateStr);
+  return moment(dateStr).format('hh:mm:ss');
+  /*var date = new Date(dateStr);
   var hour = (date.getHours() < 12) ? date.getHours() : date.getHours() - 12;
   var minutes = pad(date.getMinutes(), 2);
   var amOrPm = (date.getHours() < 12) ? "am" : "pm";
-  return hour + ':' + minutes + amOrPm;
+  return hour + ':' + minutes + amOrPm;*/
 }
 
 function showModal(text) {
