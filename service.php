@@ -1,55 +1,59 @@
 <?php
 
-use Apretaste\Core;
 use Cmfcmf\OpenWeatherMap;
 use Cmfcmf\OpenWeatherMap\Exception as OWMException;
+use Framework\Alert;
+use Framework\Crawler;
 use Http\Factory\Guzzle\RequestFactory;
 use Http\Adapter\Guzzle6\Client as GuzzleAdapter;
+use Apretaste\Challenges;
+use Apretaste\Request;
+use Apretaste\Response;
+use Framework\Utils;
+use Framework\Config;
 
-class ClimaService extends ApretasteService
+class Service
 {
-	public $apiKey = 'fdad9949d0a347811e8b84867ccd9707';
-
 	/**
 	 * Gets the most current weather forecast for Cuba
 	 *
 	 * @throws \Exception
 	 */
-	public function _main(): void
+	public function _main(Request $request, Response &$response): void
 	{
-		$this->response->setLayout('clima.ejs');
+		$response->setLayout('clima.ejs');
 
 		$httpRequestFactory = new RequestFactory();
 		$httpClient = GuzzleAdapter::createWithConfig([]);
-
-		$owm = new OpenWeatherMap($this->apiKey, $httpClient, $httpRequestFactory,null,3600 * 4 ); //Cache in seconds
+		$apiKey = Config::pick('openweather')['apikey'];
+		$owm = new OpenWeatherMap($apiKey, $httpClient, $httpRequestFactory, null, 3600 * 4); //Cache in seconds
 		$lang = 'es';
 		$units = 'metric';
 
 		$province = [
-			'PINAR_DEL_RIO'       => '3544091',
-			'LA_HABANA'           => '3553478',
-			'ARTEMISA'            => '3568312',
-			'MAYABEQUE'           => '3539560', //San Jose de las Lajas
-			'MATANZAS'            => '3547398',
-			'VILLA_CLARA'         => '3537906', //Santa Clara
-			'CIENFUEGOS'          => '3564124',
-			'SANCTI_SPIRITUS'     => '3540667',
-			'CIEGO_DE_AVILA'      => '3564178',
-			'CAMAGUEY'            => '3566067',
-			'LAS_TUNAS'           => '3550598',
-			'HOLGUIN'             => '3556969',
-			'GRANMA'              => '3567597',
-			'SANTIAGO_DE_CUBA'    => '3536729',
-			'GUANTANAMO'          => '3557689',
+			'PINAR_DEL_RIO' => '3544091',
+			'LA_HABANA' => '3553478',
+			'ARTEMISA' => '3568312',
+			'MAYABEQUE' => '3539560', //San Jose de las Lajas
+			'MATANZAS' => '3547398',
+			'VILLA_CLARA' => '3537906', //Santa Clara
+			'CIENFUEGOS' => '3564124',
+			'SANCTI_SPIRITUS' => '3540667',
+			'CIEGO_DE_AVILA' => '3564178',
+			'CAMAGUEY' => '3566067',
+			'LAS_TUNAS' => '3550598',
+			'HOLGUIN' => '3556969',
+			'GRANMA' => '3567597',
+			'SANTIAGO_DE_CUBA' => '3536729',
+			'GUANTANAMO' => '3557689',
 			'ISLA_DE_LA_JUVENTUD' => '3545867', // Nueva Gerona
 		];
 
 		$dtz = new DateTimeZone('America/Havana'); //Your timezone
 		$now = new DateTime(date('d-m-Y'), $dtz);
 
-		$customProvince = $province[$this->request->person->province] ?? 'LA_HABANA'; // havana is default
-		$customProvince = $this->request->input->data->query->province ?? $customProvince; // change if user select another
+		$customProvince = $province[$request->person->province] ?? 'LA_HABANA'; // havana is default
+		$customProvince = $request->input->data->query->province ?? $customProvince; // change if user select another
 		$customProvince = strtoupper(str_replace(' ', '_', $customProvince)); // normalize the value
 		$code = $province[$customProvince] ?? $province['LA_HABANA'];
 
@@ -58,19 +62,19 @@ class ClimaService extends ApretasteService
 			$forecast = $owm->getWeatherForecast($code, $units, $lang, '', 1);
 
 			$data = [
-				'temperature'   => $weather->temperature->getFormatted(),
+				'temperature' => $weather->temperature->getFormatted(),
 				'windDirection' => $this->translate('direction', $weather->wind->direction->getDescription()),
-				'windSpeed'     => $weather->wind->speed->getFormatted(),
+				'windSpeed' => $weather->wind->speed->getFormatted(),
 				'precipitation' => $this->translate('precipitation', $weather->precipitation->getDescription()),
-				'humidity'      => $weather->humidity->getFormatted(),
-				'pressure'      => $weather->pressure->getFormatted(),
-				'sunrise'       => $date = (new DateTime('@'.$weather->sun->rise->getTimestamp()))->setTimezone($dtz)->format('h:m a'),
-				'sunset'        => $date = (new DateTime('@'.$weather->sun->set->getTimestamp()))->setTimezone($dtz)->format('h:m a'),
-				'clouds'        => $this->translate('clouds', $weather->clouds->getDescription()),
-				'lastUpdate'    => $date = (new DateTime('@'.$weather->lastUpdate->getTimestamp()))->setTimezone($dtz)->format('h:m d/M/Y'),
-				'city'          => $weather->city->name,
-				'now'           => $now->format('d').' de '.$this->translate('month', $now->format('F')).' del '.$now->format('Y'),
-				'icon'          => $this->translate('icon', $weather->weather->icon),//$this->pathToService.'/images/'.$weather->weather->icon.'.png'
+				'humidity' => $weather->humidity->getFormatted(),
+				'pressure' => $weather->pressure->getFormatted(),
+				'sunrise' => $date = (new DateTime('@'.$weather->sun->rise->getTimestamp()))->setTimezone($dtz)->format('h:m a'),
+				'sunset' => $date = (new DateTime('@'.$weather->sun->set->getTimestamp()))->setTimezone($dtz)->format('h:m a'),
+				'clouds' => $this->translate('clouds', $weather->clouds->getDescription()),
+				'lastUpdate' => $date = (new DateTime('@'.$weather->lastUpdate->getTimestamp()))->setTimezone($dtz)->format('h:m d/M/Y'),
+				'city' => $weather->city->name,
+				'now' => $now->format('d').' de '.$this->translate('month', $now->format('F')).' del '.$now->format('Y'),
+				'icon' => $this->translate('icon', $weather->weather->icon),//$this->pathToService.'/images/'.$weather->weather->icon.'.png'
 			];
 
 			if ($data['city'] === 'Havana') {
@@ -80,34 +84,51 @@ class ClimaService extends ApretasteService
 			$fCast = [];
 			foreach ($forecast as $w) {
 				$fCast[] = [
-					'from'          => $date = (new DateTime('@'.$w->time->from->getTimestamp()))->setTimezone($dtz),
-					'to'            => $date = (new DateTime('@'.$w->time->to->getTimestamp()))->setTimezone($dtz),
-					'clouds'        => $this->translate('clouds', $w->clouds->getDescription()),
-					'temperature'   => $w->temperature->getFormatted(),
+					'from' => $date = (new DateTime('@'.$w->time->from->getTimestamp()))->setTimezone($dtz),
+					'to' => $date = (new DateTime('@'.$w->time->to->getTimestamp()))->setTimezone($dtz),
+					'clouds' => $this->translate('clouds', $w->clouds->getDescription()),
+					'temperature' => $w->temperature->getFormatted(),
 					'precipitation' => $this->translate('precipitation', $w->precipitation->getDescription()),
-					'icon'          => $this->translate('icon', $w->weather->icon),
+					'icon' => $this->translate('icon', $w->weather->icon),
 				];
 			}
 		} catch (OWMException $e) {
-			Utils::createAlert('CLIMA:OpenWeatherMap exception: '.$e->getMessage().' (Code '.$e->getCode().').', 'ERROR');
-			$this->simpleMessage('Error en peticion', 'Lo siento pero hemos tenido un error inesperado. Enviamos una peticion para corregirlo. Por favor intente nuevamente mas tarde.');
-
+			$alert = new Alert($e->getCode(), '[ERROR] CLIMA: OpenWeatherMap exception: '.$e->getMessage());
+			//$alert->post();
+			$response->setTemplate('message.ejs', [
+					'header' => html_entity_decode('Error en peticion'),
+					'icon' => '',
+					'text' => html_entity_decode('Lo siento pero hemos tenido un error inesperado. Enviamos una peticion para corregirlo. Por favor intente nuevamente mas tarde.'),
+					'button' => [
+							'href' => 'CLIMA',
+							'caption' => 'Regresar',
+					]
+			]);
 			return;
 		} catch (Exception $e) {
-			Utils::createAlert('CLIMA: General exception: '.$e->getMessage().' (Code '.$e->getCode().').', 'ERROR');
-			$this->simpleMessage('Error inesperado', 'Lo siento pero hemos tenido un error inesperado. Enviamos una peticion para corregirlo. Por favor intente nuevamente mas tarde.');
+			new Alert($e->getCode(), '[ERROR] CLIMA: General exception: '.$e->getMessage());
+
+			$response->setTemplate('message.ejs', [
+					'header' => html_entity_decode('Error en peticion'),
+					'icon' => '',
+					'text' => html_entity_decode('Lo siento pero hemos tenido un error inesperado. Enviamos una peticion para corregirlo. Por favor intente nuevamente mas tarde.'),
+					'button' => [
+							'href' => 'CLIMA',
+							'caption' => 'Regresar',
+					]
+			]);
 
 			return;
 		}
 
-		$this->response->setTemplate('basic.ejs', [
-			'data'      => $data,
-			'fcast'     => $fCast,
+		$response->setTemplate('basic.ejs', [
+			'data' => $data,
+			'fcast' => $fCast,
 			'floatIcon' => 'cloud_queue',
 			'provinces' => array_keys($province)
 		]);
 
-		Challenges::complete("view-clima", $this->request->person->id);
+		Challenges::complete("view-clima", $request->person->id);
 	}
 
 	/**
@@ -121,34 +142,33 @@ class ClimaService extends ApretasteService
 
 	public function translate(String $type, String $text): string
 	{
-
 		$clouds = [
-			'clear sky'        => 'Cielo despejado',
+			'clear sky' => 'Cielo despejado',
 			'scattered clouds' => 'Nubes dispersas',
-			'few clouds'       => 'Pocas nubes',
-			'broken clouds'    => 'Nubes fragmentadas',
-			'overcast clouds'  => 'Nublado',
+			'few clouds' => 'Pocas nubes',
+			'broken clouds' => 'Nubes fragmentadas',
+			'overcast clouds' => 'Nublado',
 		];
 
 		$direction = [
-			'Southwest'       => 'Suroeste',
-			'SouthEast'       => 'Sureste',
-			'Northwest'       => 'Noroeste',
-			'NorthEast'       => 'Noreste',
-			'East'            => 'Este',
-			'South'           => 'Sur',
-			'North'           => 'Norte',
-			'West'            => 'Oeste',
+			'Southwest' => 'Suroeste',
+			'SouthEast' => 'Sureste',
+			'Northwest' => 'Noroeste',
+			'NorthEast' => 'Noreste',
+			'East' => 'Este',
+			'South' => 'Sur',
+			'North' => 'Norte',
+			'West' => 'Oeste',
 			'North-northeast' => 'Norte-noreste',
 			'North-northwest' => 'Norte-noroeste',
 			'South-southeast' => 'Sur-sureste',
 			'South-southwest' => 'Sur-suroeste',
-			'West-southwest'  => 'Oeste-noroeste',
-			'West-northwest'  => 'Oeste-suroeste',
-			'East-southeast'  => 'Este-sureste',
-			'East-southwest'  => 'Este-suroeste',
-			'East-northeast'  => 'Este-noreste',
-			'East-northwest'  => 'Este-noroeste',
+			'West-southwest' => 'Oeste-noroeste',
+			'West-northwest' => 'Oeste-suroeste',
+			'East-southeast' => 'Este-sureste',
+			'East-southwest' => 'Este-suroeste',
+			'East-northeast' => 'Este-noreste',
+			'East-northwest' => 'Este-noroeste',
 		];
 
 		$icon = [
@@ -171,18 +191,18 @@ class ClimaService extends ApretasteService
 		];
 
 		$month = [
-			'January'   => 'Enero',
-			'February'  => 'Febrero',
-			'March'     => 'Marzo',
-			'April'     => 'Abril',
-			'May'       => 'Mayo',
-			'June'      => 'Junio',
-			'July'      => 'Julio',
-			'August'    => 'Agosto',
+			'January' => 'Enero',
+			'February' => 'Febrero',
+			'March' => 'Marzo',
+			'April' => 'Abril',
+			'May' => 'Mayo',
+			'June' => 'Junio',
+			'July' => 'Julio',
+			'August' => 'Agosto',
 			'September' => 'Septiembre',
-			'October'   => 'Octubre',
-			'November'  => 'Noviembre',
-			'December'  => 'Diciembre',
+			'October' => 'Octubre',
+			'November' => 'Noviembre',
+			'December' => 'Diciembre',
 		];
 
 		switch ($type) {
@@ -230,17 +250,17 @@ class ClimaService extends ApretasteService
 	 * Subservice satelite
 	 *
 	 */
-	public function _satelite()
+	public function _satelite(Request $request, Response &$response)
 	{
 		$url = 'http://images.intellicast.com/WxImages/Satellite/hicbsat.gif';
-		$this->response->setCache();
-		$this->commonImageResponse('Imagen del sat&eacute;lite', $url, 'satellite');
+		$response->setCache();
+		$this->commonImageResponse('Imagen del sat&eacute;lite', $url, 'satellite', $response);
 	}
 
 	/**
 	 * Subservice radar
 	 */
-	public function _radar()
+	public function _radar(Request $request, Response &$response)
 	{
 		$radares = [
 			'http://www.met.inf.cu/Radar/NacComp200Km.gif', // mosaico
@@ -253,83 +273,87 @@ class ClimaService extends ApretasteService
 		$url = false;
 
 		foreach ($radares as $urlx) {
-			if ($this->getUrl($urlx) !== false) {
+			if (Crawler::get($urlx) !== false) {
 				$url = $urlx;
 				break;
 			}
 		}
 
 		if ($url === false) {
-			//$this->response->setCache('day');
-			$this->simpleMessage('No se pudo obtener la imagen del radar',
+			//$response->setCache('day');
+			$this->simpleMessage(
+				'No se pudo obtener la imagen del radar',
 				'No se pudo obtener la imagen del radar, intente m&aacute;s tarde'
 			);
 
 			return;
 		}
 
-		$this->commonImageResponse('Imagen del radar', 'http://www.met.inf.cu/Radar/NacComp200Km.gif');
+		$this->commonImageResponse('Imagen del radar', 'http://www.met.inf.cu/Radar/NacComp200Km.gif', 'cloud', $response);
 	}
 
 	/**
 	 * Subservice temperatura
 	 *
 	 */
-	public function _temperatura()
+	public function _temperatura(Request $request, Response &$response)
 	{
-		$this->commonImageResponse('An&aacute;lisis de la temperatura del mar (NOAA/NHC)', 'http://polar.ncep.noaa.gov/sst/ophi/nwatl_sst_ophi0.png','public');
+		$this->commonImageResponse('An&aacute;lisis de la temperatura del mar (NOAA/NHC)', 'http://polar.ncep.noaa.gov/sst/ophi/nwatl_sst_ophi0.png', 'public', $response);
 	}
 
 	/**
 	 * Subservice superficie
 	 *
 	 */
-	public function _superficie()
+	public function _superficie(Request $request, Response &$response)
 	{
-		$this->commonImageResponse('An&aacute;lisis de superficie del Atl&aacute;ntico y el Caribe (NOAA/NHC)', 'http://dadecosurf.com/images/tanal.1.gif','cloud');
+		$this->commonImageResponse('An&aacute;lisis de superficie del Atl&aacute;ntico y el Caribe (NOAA/NHC)', 'http://dadecosurf.com/images/tanal.1.gif', 'cloud', $response);
 	}
 
 	/**
 	 * Subservice atlantico
 	 */
-	public function _atlantico()
+	public function _atlantico(Request $request, Response &$response)
 	{
-		$this->commonImageResponse('An&aacute;lisis del estado del Atl&aacute;ntico (NOAA/NHC)', 'http://www.nhc.noaa.gov/tafb_latest/atlsea_latestBW.gif');
+		$this->commonImageResponse('An&aacute;lisis del estado del Atl&aacute;ntico (NOAA/NHC)', 'http://www.nhc.noaa.gov/tafb_latest/atlsea_latestBW.gif', 'public', $response);
 	}
 
 	/**
 	 * Subservice caribe
 	 */
-	public function _caribe()
+	public function _caribe(Request $request, Response &$response)
 	{
-		$this->commonImageResponse('Imagen del Caribe (Weather Channel)', 'http://sirocco.accuweather.com/sat_mosaic_640x480_public/ei/isaecar.gif');
+		$this->commonImageResponse('Imagen del Caribe (Weather Channel)', 'http://sirocco.accuweather.com/sat_mosaic_640x480_public/ei/isaecar.gif', 'cloud', $response);
 	}
 
 	/**
 	 * Subservice polvo
 	 *
 	 */
-	public function _polvo()
+	public function _polvo(Request $request, Response &$response)
 	{
-		$this->commonImageResponse('Imagen del Polvo del desierto', 'http://tropic.ssec.wisc.edu/real-time/sal/splitEW.jpg');
+		$this->commonImageResponse('Imagen del Polvo del desierto', 'http://tropic.ssec.wisc.edu/real-time/sal/splitEW.jpg', 'cloud', $response);
 	}
 
 
 	/**
 	 * Subservice presion
 	 */
-	public function _presion()
+	public function _presion(Request $request, Response &$response)
 	{
-		$this->commonImageResponse('Presi&oacute;n superficial', 'http://www.nhc.noaa.gov/tafb_latest/WATL_latest.gif','map');
+		$this->commonImageResponse('Presi&oacute;n superficial', 'http://www.nhc.noaa.gov/tafb_latest/WATL_latest.gif', 'map', $response);
 	}
 
 	/**
 	 * Subservice huracan
 	 */
-	public function _huracan()
+	public function _huracan(Request $request, Response &$response)
 	{
-		$this->commonImageResponse(html_entity_decode('Cono de trayectoria hurac&aacute;n'),
-			'http://images.intellicast.com/WxImages/CustomGraphic/HurTrack1.gif', 'my_location'
+		$this->commonImageResponse(
+			html_entity_decode('Cono de trayectoria hurac&aacute;n'),
+			'http://images.intellicast.com/WxImages/CustomGraphic/HurTrack1.gif',
+			'my_location',
+			$response
 		);
 	}
 
@@ -338,30 +362,33 @@ class ClimaService extends ApretasteService
 	 *
 	 * @param string $title
 	 * @param string $url
-	 *
 	 * @param string $floatIcon
-	 *
+	 * @param \Apretaste\Response $response
 	 * @return void
+	 * @throws \Framework\Alert
 	 * @author kuma
 	 */
-	private function commonImageResponse($title, $url, $floatIcon = 'cloud_queue'): void
+	private function commonImageResponse($title, $url, $floatIcon = 'cloud_queue', Response &$response): void
 	{
-		$this->response->setLayout('clima.ejs');
+		$response->setLayout('clima.ejs');
 
 		// download and prepare the image
 		$image = $this->downloadAndPrepareImage($url);
 
 		if ($image === false) {
-			$this->simpleMessage('Hubo problemas al atender tu solicitud',
-				"No hemos podido resolver su solicitud: <b>{$title}</b>. Intente m&aacute;s tarde y si el problema persiste contacta con el soporte t&eacute;cnico."
-			);
-
+			$response->setTemplate('message.ejs', [
+				'header' => html_entity_decode('Hubo problemas al atender tu solicitud'),
+				'icon' => '',
+				'text' => html_entity_decode("No hemos podido resolver su solicitud: <b>{$title}</b>. Intente m&aacute;s tarde y si el problema persiste contacta con el soporte t&eacute;cnico."),
+				'button' => [
+					'href' => 'clima',
+					'caption' => 'Regresar',
+				]
+			]);
 			return;
 		}
 
-		// create response
-		//$this->response->setCache();
-		$this->response->setTemplate('image.ejs', ['title' => $title, 'image' => basename("$image"), 'floatIcon' => $floatIcon], [$image]);
+		$response->setTemplate('image.ejs', ['title' => $title, 'image' => basename("$image"), 'floatIcon' => $floatIcon], [$image]);
 	}
 
 	/**
@@ -536,58 +563,11 @@ class ClimaService extends ApretasteService
 			116 => 9925,
 			113 => 9728,
 		];
-		if (!isset($images[$code])) //	return "{$this->pathToService}/images/wsymbol_0001_sunny.jpg";
-		{
+		if (!isset($images[$code])) { //	return "{$this->pathToService}/images/wsymbol_0001_sunny.jpg";
 			return 9728;
 		}
 
 		return $images[$code];
-	}
-
-	/**
-	 * Remote get contents
-	 *
-	 * @param       $url
-	 * @param array $info
-	 *
-	 * @return mixed
-	 */
-	private function getUrl($url, &$info = [])
-	{
-		$url = str_replace('//', '/', $url);
-		$url = str_replace('http:/', 'http://', $url);
-		$url = str_replace('https:/', 'https://', $url);
-
-		$ch = curl_init();
-
-		curl_setopt($ch, CURLOPT_URL, $url);
-
-		$default_headers = [
-			'Cache-Control' => 'max-age=0',
-			'Origin'        => "{$url}",
-			'User-Agent'    => 'Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/36.0.1985.125 Safari/537.36',
-			'Content-Type'  => 'application/x-www-form-urlencoded',
-		];
-
-		$hhs = [];
-		foreach ($default_headers as $key => $val) {
-			$hhs[] = "$key: $val";
-		}
-
-		curl_setopt($ch, CURLOPT_HTTPHEADER, $hhs);
-		curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
-		curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
-
-		$html = curl_exec($ch);
-		$info = curl_getinfo($ch);
-
-		if (isset($info['redirect_url']) && $info['redirect_url'] != $url && !empty($info['redirect_url'])) {
-			return $this->getUrl($info['redirect_url'], $info);
-		}
-
-		curl_close($ch);
-
-		return $html;
 	}
 
 	/**
@@ -596,13 +576,14 @@ class ClimaService extends ApretasteService
 	 * @param String $url url of the image
 	 *
 	 * @return String path to the image
+	 * @throws \Exception
 	 */
 	private function downloadAndPrepareImage($url)
 	{
 		// save image to the temp folder
-		$filePath = Core::getTempDir().'/'.Utils::generateRandomHash();
+		$filePath = TEMP_PATH . Utils::randomHash();
 		$info = [];
-		$content = Utils::file_get_contents_curl($url, [], $info);
+		$content = Crawler::get($url, 'GET', null, [], [], $info);
 
 		if ($content === false) {
 			return false;
@@ -628,7 +609,7 @@ class ClimaService extends ApretasteService
 		file_put_contents($filePath, $content);
 
 		$type = $this->getFileType($filePath);
-		if (strtolower(trim(substr($type, 0, 6) != 'image/'))) {
+		if (strtolower(trim(strpos($type, 'image/') !== 0))) {
 			return false;
 		}
 

@@ -1,8 +1,9 @@
 {
 	"name": "clima",
-	"version": "27",
 	"description": "Devuelve el estado del tiempo y el pronostico meteorologico para Cuba",
 	"category": "informativo",
 	"creator": "kuma@apretaste.org",
-	"listed": true
+	"listed": true,
+	"guest": true,
+	"caption": "Clima"
 }
