@@ -52,7 +52,7 @@ class Service
 		$dtz = new DateTimeZone('America/Havana'); //Your timezone
 		$now = new DateTime(date('d-m-Y'), $dtz);
 
-		$customProvince = $province[$request->person->province] ?? 'LA_HABANA'; // havana is default
+		$customProvince = $province[$request->person->provinceCode] ?? 'LA_HABANA'; // havana is default
 		$customProvince = $request->input->data->query->province ?? $customProvince; // change if user select another
 		$customProvince = strtoupper(str_replace(' ', '_', $customProvince)); // normalize the value
 		$code = $province[$customProvince] ?? $province['LA_HABANA'];
