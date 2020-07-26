@@ -164,6 +164,11 @@ class Service
 					Challenges::track($request->person->id, 'clima-2', ['last_date' => $today, 'times' => 0], static function ($track) use ($today) {
 						$track['last_date'] = $today;
 						$track['times']++;
+
+						if ($track['times'] >= 2) {
+							return 2;
+						}
+
 						return $track;
 					});
 				} else {
