@@ -161,7 +161,8 @@ class Service
 			if ($current !== null) {
 				// yesterday or today ?
 				if ($current->fecha == $yesterday || $current->fecha == $today) {
-					Challenges::track($request->person->id, 'clima-2', ['last_date' => $today, 'times' => 0], static function ($track) {
+					Challenges::track($request->person->id, 'clima-2', ['last_date' => $today, 'times' => 0], static function ($track) use ($today) {
+						$track['last_date'] = $today;
 						$track['times']++;
 						return $track;
 					});
