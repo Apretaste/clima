@@ -143,7 +143,7 @@ class Service
 
 
 		// get yesterday
-		$challenge = Challenges::getByCode('clima-5');
+		$challenge = Challenges::getByCode('clima-2');
 		if ($challenge !== null) {
 			$format = 'Y-m-d';
 
