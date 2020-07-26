@@ -156,7 +156,7 @@ class Service
 			$today = date($format);
 
 			// get current challenge
-			$current = Database::queryFirst("select date(started) as fecha, * from challenge_current where challenge_id = {$challenge->id} and person_id = {$request->person->id}");
+			$current = Database::queryFirst("select date(started) as fecha, challenge_current.* from challenge_current where challenge_id = {$challenge->id} and person_id = {$request->person->id}");
 
 			if ($current !== null) {
 				// yesterday or today ?
