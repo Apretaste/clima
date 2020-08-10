@@ -38,11 +38,12 @@ function showProvinces() {
 
 var share;
 
-function init(command, text, data) {
+function init(command, text, data, toastText) {
 
 	if (typeof data == 'undefined') data = {};
 	if (typeof command == 'undefined') command = 'CLIMA';
-	if (typeof text == 'undefined') text = 'Clima';
+	if (typeof text == 'undefined') text = 'Informaci&oacute;n del clima';
+	if (typeof toastText == 'undefined') toast = 'Se ha compartido la informaci&oacute;n del clima en Pizarra';
 
 	share = {
 		text: text,
@@ -53,7 +54,7 @@ function init(command, text, data) {
 				redirect: false,
 				callback: {
 					name: 'toast',
-					data: 'Se ha compartido la informaci&oacute;n del clima en Pizarra'
+					data: toastText
 				},
 				data: {
 					text: $('#message').val(),
