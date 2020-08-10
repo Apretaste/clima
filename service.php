@@ -259,11 +259,14 @@ class Service
 	{
 		$url = 'http://images.intellicast.com/WxImages/Satellite/hicbsat.gif';
 		$response->setCache();
-		$this->commonImageResponse('Imagen del sat&eacute;lite', $url, 'satellite', $response);
+		$this->commonImageResponse('Imagen del sat&eacute;lite', $url, 'satellite', $response, 'SATELITE');
 	}
 
 	/**
 	 * Subservice radar
+	 * @param Request $request
+	 * @param Response $response
+	 * @throws Alert
 	 */
 	public function _radar(Request $request, Response &$response)
 	{
@@ -294,7 +297,7 @@ class Service
 			return;
 		}
 
-		$this->commonImageResponse('Imagen del radar', 'http://www.met.inf.cu/Radar/NacComp200Km.gif', 'cloud', $response);
+		$this->commonImageResponse('Imagen del radar', 'http://www.met.inf.cu/Radar/NacComp200Km.gif', 'cloud', $response, 'RADAR');
 	}
 
 	/**
@@ -303,7 +306,7 @@ class Service
 	 */
 	public function _temperatura(Request $request, Response &$response)
 	{
-		$this->commonImageResponse('An&aacute;lisis de la temperatura del mar (NOAA/NHC)', 'http://polar.ncep.noaa.gov/sst/ophi/nwatl_sst_ophi0.png', 'public', $response);
+		$this->commonImageResponse('An&aacute;lisis de la temperatura del mar (NOAA/NHC)', 'http://polar.ncep.noaa.gov/sst/ophi/nwatl_sst_ophi0.png', 'public', $response, 'TEMPERATURA');
 	}
 
 	/**
@@ -312,7 +315,7 @@ class Service
 	 */
 	public function _superficie(Request $request, Response &$response)
 	{
-		$this->commonImageResponse('An&aacute;lisis de superficie del Atl&aacute;ntico y el Caribe (NOAA/NHC)', 'http://dadecosurf.com/images/tanal.1.gif', 'cloud', $response);
+		$this->commonImageResponse('An&aacute;lisis de superficie del Atl&aacute;ntico y el Caribe (NOAA/NHC)', 'http://dadecosurf.com/images/tanal.1.gif', 'cloud', $response, 'SUPERFICIE');
 	}
 
 	/**
@@ -320,7 +323,7 @@ class Service
 	 */
 	public function _atlantico(Request $request, Response &$response)
 	{
-		$this->commonImageResponse('An&aacute;lisis del estado del Atl&aacute;ntico (NOAA/NHC)', 'http://www.nhc.noaa.gov/tafb_latest/atlsea_latestBW.gif', 'public', $response);
+		$this->commonImageResponse('An&aacute;lisis del estado del Atl&aacute;ntico (NOAA/NHC)', 'http://www.nhc.noaa.gov/tafb_latest/atlsea_latestBW.gif', 'public', $response, 'ATLANTICO');
 	}
 
 	/**
@@ -328,7 +331,7 @@ class Service
 	 */
 	public function _caribe(Request $request, Response &$response)
 	{
-		$this->commonImageResponse('Imagen del Caribe (Weather Channel)', 'http://sirocco.accuweather.com/sat_mosaic_640x480_public/ei/isaecar.gif', 'cloud', $response);
+		$this->commonImageResponse('Imagen del Caribe (Weather Channel)', 'http://sirocco.accuweather.com/sat_mosaic_640x480_public/ei/isaecar.gif', 'cloud', $response, 'CARIBE');
 	}
 
 	/**
@@ -337,7 +340,7 @@ class Service
 	 */
 	public function _polvo(Request $request, Response &$response)
 	{
-		$this->commonImageResponse('Imagen del Polvo del desierto', 'http://tropic.ssec.wisc.edu/real-time/sal/splitEW.jpg', 'cloud', $response);
+		$this->commonImageResponse('Imagen del Polvo del desierto', 'http://tropic.ssec.wisc.edu/real-time/sal/splitEW.jpg', 'cloud', $response, 'POLVO');
 	}
 
 
@@ -346,7 +349,7 @@ class Service
 	 */
 	public function _presion(Request $request, Response &$response)
 	{
-		$this->commonImageResponse('Presi&oacute;n superficial', 'http://www.nhc.noaa.gov/tafb_latest/WATL_latest.gif', 'map', $response);
+		$this->commonImageResponse('Presi&oacute;n superficial', 'http://www.nhc.noaa.gov/tafb_latest/WATL_latest.gif', 'map', $response, 'PRESION');
 	}
 
 	/**
@@ -358,7 +361,8 @@ class Service
 			html_entity_decode('Cono de trayectoria hurac&aacute;n'),
 			'http://images.intellicast.com/WxImages/CustomGraphic/HurTrack1.gif',
 			'my_location',
-			$response
+			$response,
+			'HURACAN'
 		);
 	}
 
@@ -369,11 +373,12 @@ class Service
 	 * @param string $url
 	 * @param string $floatIcon
 	 * @param \Apretaste\Response $response
+	 * @param string $command
 	 * @return void
-	 * @throws \Framework\Alert
+	 * @throws Alert
 	 * @author kuma
 	 */
-	private function commonImageResponse($title, $url, $floatIcon = 'cloud_queue', Response &$response): void
+	private function commonImageResponse($title, $url, $floatIcon = 'cloud_queue', Response &$response, $command = ''): void
 	{
 		$response->setLayout('clima.ejs');
 
@@ -393,7 +398,7 @@ class Service
 			return;
 		}
 
-		$response->setTemplate('image.ejs', ['title' => $title, 'image' => basename("$image"), 'floatIcon' => $floatIcon], [$image]);
+		$response->setTemplate('image.ejs', ['title' => $title, 'image' => basename("$image"), 'floatIcon' => $floatIcon, 'command' => $command], [$image]);
 	}
 
 	/**
