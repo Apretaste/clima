@@ -1,9 +1,11 @@
 <?php
 
+use Apretaste\Notifications;
 use Cmfcmf\OpenWeatherMap;
 use Cmfcmf\OpenWeatherMap\Exception as OWMException;
 use Framework\Alert;
 use Framework\Crawler;
+use Framework\Database;
 use Http\Factory\Guzzle\RequestFactory;
 use Http\Adapter\Guzzle6\Client as GuzzleAdapter;
 use Apretaste\Challenges;
@@ -133,7 +135,49 @@ class Service
 			'provinces' => array_keys($province)
 		]);
 
+		// challenges
+
 		Challenges::complete("view-clima", $request->person->id);
+
+		// challenges
+
+
+		// get yesterday
+		$challenge = Challenges::getByCode('clima-2');
+		if ($challenge !== null) {
+			$format = 'Y-m-d';
+
+			// get yesterday
+			$yesterday = new DateTime();
+			$yesterday->add(DateInterval::createFromDateString('yesterday'));
+			$yesterday = $yesterday->format($format);
+
+			// get today
+			$today = date($format);
+
+			// get current challenge
+			$current = Database::queryFirst("select date(started) as fecha, challenge_current.* from challenge_current where challenge_id = {$challenge->id} and person_id = {$request->person->id}");
+
+			if ($current !== null) {
+				// yesterday or today ?
+				if ($current->fecha == $yesterday || $current->fecha == $today) {
+					Challenges::track($request->person->id, 'clima-2', ['last_date' => $today, 'times' => 0], static function ($track) use ($today) {
+						$track['last_date'] = $today;
+						$track['times']++;
+
+						if ($track['times'] >= 2) {
+							return 2;
+						}
+
+						return $track;
+					});
+				} else {
+					// drop challenge
+					Challenges::remove($request->person->id, $challenge->id);
+					Notifications::alert($request->person->id, 'No visitaste CLIMA el dia del reto y el dia siguiente al reto, por lo que no completaste el reto y se te elimino el mismo.', 'info_outline', '{command: "RETOS"}');
+				}
+			}
+		}
 	}
 
 	/**
