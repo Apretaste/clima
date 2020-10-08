@@ -1,9 +1,10 @@
 {
 	"name": "clima",
-	"description": "Devuelve el estado del tiempo y el pronostico meteorologico para Cuba",
+	"caption": "Clima",
+	"icon": "fas fa-cloud-sun",
+	"description": "Devuelve el estado del tiempo y el pronóstico meteorológico para Cuba",
 	"category": "informativo",
 	"creator": "kuma@apretaste.org",
 	"listed": true,
-	"guest": true,
-	"caption": "Clima"
+	"guest": true
 }

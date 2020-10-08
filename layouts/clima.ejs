@@ -1,46 +1,52 @@
-<div class="container">
-	<div class="row" style="padding-top: 15px;">
-		<nav class="nav-center hide">
-			<div class="nav-wrapper blue-bg">
-				<span class="brand-logo right">
-					<i><b style="font-size:40px;">&nbsp; CLIMA</b></i>
-				</span>
-				<ul>
-					<li>
-						<a class="black-text" href="#!" onclick="apretaste.send({'command':'CLIMA'})">
-							<i class="material-icons">home</i>
-						</a>
-					</li>
-				</ul>
-			</div>
-		</nav>
+<!-- TEMPLATE CODE -->
 
-		<div id="modalText" class="modal">
-			<div class="modal-content"></div>
-			<div class="modal-footer">
-				<a href="#!" class="modal-close waves-effect waves-green btn-flat">Cerrar</a>
-			</div>
-		</div>
+{{APP_TEMPLATE_CODE}}
 
-		{{APP_TEMPLATE_CODE}}
+<!-- MENU -->
 
-		<div class="bottom-space"></div>
+<ul id="sideMenu" class="sidenav">
+	<li><a href="#!" onclick="apretaste.send({command:'CLIMA'})"><i class="fas fa-umbrella"></i> Estado del tiempo</a></li>
+	<li><a href="#!" onclick="apretaste.send({command:'CLIMA HURACAN'})"><i class="fas fa-wind"></i> Huracán</a></li>
+	<li><a href="#!" onclick="apretaste.send({command:'CLIMA SATELITE'})"><i class="fas fa-satellite"></i> Satélite</a></li>
+	<li><a href="#!" onclick="apretaste.send({command:'CLIMA CARIBE'})"><i class="fas fa-tree"></i> Caribe</a></li>
+	<li><a href="#!" onclick="apretaste.send({command:'CLIMA ATLANTICO'})"><i class="fas fa-water"></i> Atlántico</a></li>
+	<li><a href="#!" onclick="apretaste.send({command:'CLIMA PRESION'})"><i class="fas fa-thermometer-three-quarters"></i> Presión superficial</a></li>
+</ul>
 
-		<div class="fixed-action-btn">
-			<!-- <a class="btn-floating waves-effect waves-light grey second modal-trigger" href="#shareModal">
-				<i class="material-icons">share</i>
-			</a> -->
-			<a class="btn-floating btn-large green">
-				<i class="large material-icons"><%= floatIcon %></i>
-			</a>
-			<ul>
-				<li><a href="#!" class="btn-floating " onclick="apretaste.send({command:'CLIMA',data:{}});"><i class="material-icons left">cloud_queue</i>Tiempo</a></li>
-				<li><a href="#!" class="btn-floating " onclick="apretaste.send({command:'CLIMA HURACAN',data:{}});"><i class="material-icons left">my_location</i>Hurac&aacute;n</a></li>
-				<li><a href="#!" class="btn-floating " onclick="apretaste.send({command:'CLIMA SATELITE',data:{}});"><i class="material-icons left">satellite</i>Sat&eacute;lite</a>
-				<li><a href="#!" class="btn-floating " onclick="apretaste.send({command:'CLIMA CARIBE',data:{}});"><i class="material-icons left">cloud</i>Caribe</a>
-				<li><a href="#!" class="btn-floating " onclick="apretaste.send({command:'CLIMA ATLANTICO',data:{}});"><i class="material-icons left">public</i>Atl&aacute;ntico</a>
-				<li><a href="#!" class="btn-floating " onclick="apretaste.send({command:'CLIMA PRESION',data:{}});"><i class="material-icons left">map</i>Presi&oacute;n superficial</a>
-			</ul>
-		</div>
-	 </div>
+<!-- CHANGE PROVINCES -->
+
+<div id="modalProvinces" class="modal bottom-sheet fullscreen">
+	<div class="modal-content">
+		<span class="chip" onclick="apretaste.send({command:'CLIMA',data:{query: {province: provinces[0]}}})">Pinar del Río</span>
+		<span class="chip" onclick="apretaste.send({command:'CLIMA',data:{query: {province: provinces[1]}}})">La Habana</span>
+		<span class="chip" onclick="apretaste.send({command:'CLIMA',data:{query: {province: provinces[2]}}})">Artemisa</span>
+		<span class="chip" onclick="apretaste.send({command:'CLIMA',data:{query: {province: provinces[3]}}})">Mayabeque</span>
+		<span class="chip" onclick="apretaste.send({command:'CLIMA',data:{query: {province: provinces[4]}}})">Matanzas</span>
+		<span class="chip" onclick="apretaste.send({command:'CLIMA',data:{query: {province: provinces[5]}}})">Villa Clara</span>
+		<span class="chip" onclick="apretaste.send({command:'CLIMA',data:{query: {province: provinces[6]}}})">Cienfuegos</span>
+		<span class="chip" onclick="apretaste.send({command:'CLIMA',data:{query: {province: provinces[7]}}})">Sancti Spirítus</span>
+		<span class="chip" onclick="apretaste.send({command:'CLIMA',data:{query: {province: provinces[8]}}})">Ciego de Ávila</span>
+		<span class="chip" onclick="apretaste.send({command:'CLIMA',data:{query: {province: provinces[9]}}})">Camaguey</span>
+		<span class="chip" onclick="apretaste.send({command:'CLIMA',data:{query: {province: provinces[10]}}})">Las Tunas</span>
+		<span class="chip" onclick="apretaste.send({command:'CLIMA',data:{query: {province: provinces[11]}}})">Holguín</span>
+		<span class="chip" onclick="apretaste.send({command:'CLIMA',data:{query: {province: provinces[12]}}})">Granma</span>
+		<span class="chip" onclick="apretaste.send({command:'CLIMA',data:{query: {province: provinces[13]}}})">Santiago De Cuba</span>
+		<span class="chip" onclick="apretaste.send({command:'CLIMA',data:{query: {province: provinces[14]}}})">Guantánamo</span>
+		<span class="chip" onclick="apretaste.send({command:'CLIMA',data:{query: {province: provinces[15]}}})">Isla de la Juventud</span>
+	</div>
+</div>
+
+<!-- SUBMIT -->
+
+<div class="bottom-space"></div>
+
+<div class="fixed-action-btn">
+	<% if(icon == 'umbrella') { %>
+		<a class="btn-floating waves-effect waves-light grey second modal-trigger" href="#!" data-target="modalProvinces">
+			<i class="material-icons">create</i>
+		</a>
+	<% } %>
+	<a class="btn-floating btn-large waves-effect waves-light green sidenav-trigger" href="#!" data-target="sideMenu">
+		<i class="material-icons">menu</i>
+	</a>
 </div>

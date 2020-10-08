@@ -1,7 +1,103 @@
-.collection {
-	border: 0px;
+/* HOME SCREEN */
+
+.home .main-icon {
+	margin: 10% 0px 20px 0px;
 }
+
+#sideMenu {
+	padding-top: 20px;
+}
+
+/* FLOAT BUTTON */
 
 .bottom-space {
 	margin-bottom: 80px;
+}
+
+.btn-floating.second {
+	margin-right: -10px;
+	width: 45px;
+	height: 45px;
+	line-height: 58px;
+}
+
+.btn-floating.third {
+	bottom: 45px;
+	left: 87px;
+	width: 45px;
+	height: 45px;
+	line-height: 58px;
+}
+
+/* MODAL */
+
+.modal.fullscreen {
+	max-height: 100% !important;
+}
+
+/* TAGS */
+
+.chip .icon {
+	float: left;
+	font-size: 16px;
+	line-height: 32px;
+	padding-right: 5px;
+}
+
+.chip.tiny {
+	height: 20px;
+	padding: 0 10px;
+	line-height: 20px;
+	font-size: x-small;
+}
+
+.chip.tiny .icon {
+	line-height: 20px;
+}
+
+.chip.medium {
+	height: 20px;
+	line-height: 1.5;
+}
+
+.chip.clear {
+	color: rgba(0,0,0,0.87);
+	margin: 0px;
+	padding: 0px;
+	background-color: transparent;
+}
+
+.chip.spacing {
+	margin-right: 5px;
+}
+
+
+
+
+/* PROFILE COLLECTION */
+
+.collection.profile .avatar {
+	min-height: 63px;
+}
+
+.collection.profile .secondary-content i {
+	font-size: 30px;
+	line-height: 1.1;
+}
+
+.collection.profile .second {
+	right: 60px !important;
+}
+
+/* PREVIEW COLLECTION */
+
+.collection.preview {
+	margin: 20px 0px 0px 0px;
+	min-height: 65px;
+}
+
+/* ONE LINE COLLECTION */
+
+.collection.one-line .avatar {
+	min-height: 63px;
 }

@@ -1,70 +1,80 @@
-<% init('CLIMA', 'Estado del tiempo hoy', {}) %>
+<!-- MAIN ICON -->
 
-<div class="row">
-	<div class="col l12 m12 s12">
-		<div id="content">
-			<div class="row">
-				<div class="col s12 l12 m12 center-align">
-					<h2><%= data.city %>&nbsp;<a href="#!" onclick="showProvinces();"><i class="tiny material-icons grey-text">edit</i></a></h2>
-					<img src="{{APP_SERVICE_PATH}}/images/<%= data.icon %>.png" width="100" />
-					<p id="sub"><small><%= data.now %></small></p>
-				</div>
-			</div>
-			<table class="stripped">
-				<tr><td>Temperatura</td><td> <%- data.temperature %></td></tr>
-				<tr><td>Viento</td><td> Hacia el <%- data.windDirection %>, a <%- data.windSpeed %></td></tr>
-				<tr><td>Precipitaciones</td><td> <%= data.precipitation %></td></tr>
-				<tr><td>Humedad</td><td> <%- data.humidity %></td></tr>
-				<tr><td>Presión</td><td> <%- data.pressure %></td></tr>
-				<tr><td>Amanecer</td><td> <%= data.sunrise %></td></tr>
-				<tr><td>Anochecer</td><td> <%= data.sunset %></td></tr>
-				<tr><td>Nubosidad</td><td> <%= data.clouds %></td></tr>
-				<tr><td>Actualizado</td><td> <%= data.lastUpdate %></td></tr>
-			</table>
+<div class="row home">
+	<div class="col s12">
+		<div class="col s12 center-align">
+			<i class="main-icon fas fa-5x fa-<%= data.icon %>"></i>
+			<div><b><%= data.city %></b></div>
+			<span class="chip clear"><i class="far fa-calendar"></i> <%= moment().format('D [de] MMMM [del] YYYY') %></span>
 		</div>
 	</div>
 </div>
+
+<!-- DETAILS -->
+
 <div class="row">
-	<div class="col l12 m12 s12">
-		<h2>Pronóstico del clima</h2>
-		<div id="forecast">
-			<% for(var i=0; i < fcast.length; i++) { %>
-				<div class="row">
-					<div class="col l2 m4 s2">
-						<img src="{{APP_SERVICE_PATH}}/images/<%= fcast[i].icon %>.png" width="40" />
-					</div>
-					<div class="col l10 m10 s10">
-						<%= formatTime(fcast[i].from.date) %> a <%= formatTime(fcast[i].to.date) %> <br/>
-						<%- fcast[i].temperature %> / <%= fcast[i].clouds %> /
-						<% if (fcast[i].precipitation != "no") { %>
-							<%= fcast[i].precipitation %><br/>
+	<div class="col s12">
+		<table class="stripped">
+			<tr>
+				<td>Temperatura</td>
+				<td class="blue-grey-text"><%= data.temperature %></td>
+			</tr>
+			<tr>
+				<td>Viento</td>
+				<td class="blue-grey-text">Hacia el <%= data.windDirection %>, a <%= data.windSpeed %></td>
+			</tr>
+			<tr>
+				<td>Precipitaciones</td>
+				<td class="blue-grey-text"><%= data.precipitation %></td>
+			</tr>
+			<tr>
+				<td>Humedad</td>
+				<td class="blue-grey-text"><%= data.humidity %></td>
+			</tr>
+			<tr>
+				<td>Presión</td>
+				<td class="blue-grey-text"><%= data.pressure %></td>
+			</tr>
+			<tr>
+				<td>Amanecer</td>
+				<td class="blue-grey-text"><%= data.sunrise %></td>
+			</tr>
+			<tr>
+				<td>Anochecer</td>
+				<td class="blue-grey-text"><%= data.sunset %></td>
+			</tr>
+			<tr>
+				<td>Nubosidad</td>
+				<td class="blue-grey-text"><%= data.clouds %></td>
+			</tr>
+			<tr>
+				<td>Actualizado</td>
+				<td class="blue-grey-text"><%= data.lastUpdate %></td>
+			</tr>
+		</table>
+	</div>
+</div>
+
+<!-- DAILY TIME -->
+
+<div class="row">
+	<div class="col s12">
+		<ul class="collection one-line">
+			<% fcast.forEach(function(item) { %>
+				<li class="collection-item avatar">
+					<i class="tiny circle fas fa-2x fa-<%= item.icon %>"></i>
+					<span class="title">De <%= moment(item.from.date).format('h:mm a') %> a las <%= moment(item.to.date).format('h:mm a') %></span>
+					<p class="blue-grey-text">
+						<%= item.temperature %>, 
+						<%= item.clouds %>, 
+						<% if (item.precipitation != "no") { %>
+							<%= item.precipitation %>
 						<% } else { %>
 							Sin lluvias
 						<% } %>
-					</div>
-				</div>
-			<% } %>
-		</div>
-	</div>
-</div>
-
-<div id="modalProvinces" class="modal" style="padding: 0px;">
-	<div class="modal-content collection" style="padding: 0px;">
-		<a href="#!" class="collection-item" onclick="apretaste.send({command:'CLIMA',data:{query: {province: provinces[0]}}});">Pinar del Río</a>
-		<a href="#!" class="collection-item" onclick="apretaste.send({command:'CLIMA',data:{query: {province: provinces[1]}}});">La Habana</a>
-		<a href="#!" class="collection-item" onclick="apretaste.send({command:'CLIMA',data:{query: {province: provinces[2]}}});">Artemisa</a>
-		<a href="#!" class="collection-item" onclick="apretaste.send({command:'CLIMA',data:{query: {province: provinces[3]}}});">Mayabeque</a>
-		<a href="#!" class="collection-item" onclick="apretaste.send({command:'CLIMA',data:{query: {province: provinces[4]}}});">Matanzas</a>
-		<a href="#!" class="collection-item" onclick="apretaste.send({command:'CLIMA',data:{query: {province: provinces[5]}}});">Villa Clara</a>
-		<a href="#!" class="collection-item" onclick="apretaste.send({command:'CLIMA',data:{query: {province: provinces[6]}}});">Cienfuegos</a>
-		<a href="#!" class="collection-item" onclick="apretaste.send({command:'CLIMA',data:{query: {province: provinces[7]}}});">Sancti Spirítus</a>
-		<a href="#!" class="collection-item" onclick="apretaste.send({command:'CLIMA',data:{query: {province: provinces[8]}}});">Ciego de Ávila</a>
-		<a href="#!" class="collection-item" onclick="apretaste.send({command:'CLIMA',data:{query: {province: provinces[9]}}});">Camaguey</a>
-		<a href="#!" class="collection-item" onclick="apretaste.send({command:'CLIMA',data:{query: {province: provinces[10]}}});">Las Tunas</a>
-		<a href="#!" class="collection-item" onclick="apretaste.send({command:'CLIMA',data:{query: {province: provinces[11]}}});">Holguín</a>
-		<a href="#!" class="collection-item" onclick="apretaste.send({command:'CLIMA',data:{query: {province: provinces[12]}}});">Granma</a>
-		<a href="#!" class="collection-item" onclick="apretaste.send({command:'CLIMA',data:{query: {province: provinces[13]}}});">Santiago De Cuba</a>
-		<a href="#!" class="collection-item" onclick="apretaste.send({command:'CLIMA',data:{query: {province: provinces[14]}}});">Guantánamo</a>
-		<a href="#!" class="collection-item" onclick="apretaste.send({command:'CLIMA',data:{query: {province: provinces[15]}}});">Isla de la Juventud</a>
+					</p>
+				</li>
+			<% }) %>
+		</ul>
 	</div>
 </div>
