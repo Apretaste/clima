@@ -55,45 +55,11 @@
 	line-height: 20px;
 }
 
-.chip.medium {
-	height: 20px;
-	line-height: 1.5;
-}
-
 .chip.clear {
 	color: rgba(0,0,0,0.87);
 	margin: 0px;
 	padding: 0px;
 	background-color: transparent;
-}
-
-.chip.spacing {
-	margin-right: 5px;
-}
-
-
-
-
-/* PROFILE COLLECTION */
-
-.collection.profile .avatar {
-	min-height: 63px;
-}
-
-.collection.profile .secondary-content i {
-	font-size: 30px;
-	line-height: 1.1;
-}
-
-.collection.profile .second {
-	right: 60px !important;
-}
-
-/* PREVIEW COLLECTION */
-
-.collection.preview {
-	margin: 20px 0px 0px 0px;
-	min-height: 65px;
 }
 
 /* ONE LINE COLLECTION */
