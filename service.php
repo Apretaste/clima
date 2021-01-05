@@ -127,7 +127,7 @@ class Service
 	{
 		$this->commonImageResponse(
 			'Imagen del satélite', 
-			'http://images.intellicast.com/WxImages/Satellite/hicbsat.gif', 
+			'https://dsx.weather.com/util/image/map/DCT_SPECIAL11_1280x720.jpg',
 			'satellite', 
 			$response, 
 			'SATELITE');
@@ -179,7 +179,7 @@ class Service
 	{
 		$this->commonImageResponse(
 			'Cono de trayectoria huracán',
-			'http://images.intellicast.com/WxImages/CustomGraphic/HurTrack1.gif',
+			'http://bmcnoldy.rsmas.miami.edu/tropics/atcf/latestATL.png',
 			'wind',
 			$response,
 			'HURACAN');
