@@ -48,8 +48,8 @@ class Service
 		];
 
 		// your timezone
-		$dtz = new DateTimeZone('America/Havana'); 
-		
+		$dtz = new DateTimeZone('America/Havana');
+
 		// set default province
 		$customProvince = 'LA_HABANA';
 		if (isset($province[$request->person->provinceCode])) $customProvince = $request->person->provinceCode;
@@ -70,10 +70,10 @@ class Service
 				'precipitation' => $this->translate('precipitation', $weather->precipitation->getDescription()),
 				'humidity' => $weather->humidity->getFormatted(),
 				'pressure' => $weather->pressure->getFormatted(),
-				'sunrise' => $date = (new DateTime('@'.$weather->sun->rise->getTimestamp()))->setTimezone($dtz)->format('h:m a'),
-				'sunset' => $date = (new DateTime('@'.$weather->sun->set->getTimestamp()))->setTimezone($dtz)->format('h:m a'),
+				'sunrise' => $date = (new DateTime('@' . $weather->sun->rise->getTimestamp()))->setTimezone($dtz)->format('h:m a'),
+				'sunset' => $date = (new DateTime('@' . $weather->sun->set->getTimestamp()))->setTimezone($dtz)->format('h:m a'),
 				'clouds' => $this->translate('clouds', $weather->clouds->getDescription()),
-				'lastUpdate' => $date = (new DateTime('@'.$weather->lastUpdate->getTimestamp()))->setTimezone($dtz)->format('h:m d/M/Y'),
+				'lastUpdate' => $date = (new DateTime('@' . $weather->lastUpdate->getTimestamp()))->setTimezone($dtz)->format('h:m d/M/Y'),
 				'city' => $weather->city->name,
 				'icon' => $this->translate('icon', $weather->weather->icon),
 			];
@@ -87,8 +87,8 @@ class Service
 			$fCast = [];
 			foreach ($forecast as $w) {
 				$fCast[] = [
-					'from' => $date = (new DateTime('@'.$w->time->from->getTimestamp()))->setTimezone($dtz),
-					'to' => $date = (new DateTime('@'.$w->time->to->getTimestamp()))->setTimezone($dtz),
+					'from' => $date = (new DateTime('@' . $w->time->from->getTimestamp()))->setTimezone($dtz),
+					'to' => $date = (new DateTime('@' . $w->time->to->getTimestamp()))->setTimezone($dtz),
 					'clouds' => $this->translate('clouds', $w->clouds->getDescription()),
 					'temperature' => $w->temperature->getFormatted(),
 					'precipitation' => $this->translate('precipitation', $w->precipitation->getDescription()),
@@ -100,7 +100,7 @@ class Service
 				'header' => html_entity_decode('Error en petición'),
 				'icon' => 'sentiment_dissatisfied',
 				'text' => 'Hemos tenido un error inesperado y enviamos una petición para corregirlo. Por favor intente nuevamente más tarde.',
-				'button' => ['href'=>'CLIMA', 'caption'=>'Regresar']
+				'button' => ['href' => 'CLIMA', 'caption' => 'Regresar']
 			]);
 		}
 
@@ -126,10 +126,10 @@ class Service
 	public function _satelite(Request $request, Response $response)
 	{
 		$this->commonImageResponse(
-			'Imagen del satélite', 
+			'Imagen del satélite',
 			'https://dsx.weather.com/util/image/map/DCT_SPECIAL11_1280x720.jpg',
-			'satellite', 
-			$response, 
+			'satellite',
+			$response,
 			'SATELITE');
 	}
 
@@ -139,10 +139,10 @@ class Service
 	public function _atlantico(Request $request, Response $response)
 	{
 		$this->commonImageResponse(
-			'Análisis del estado del Atlántico (NOAA/NHC)', 
-			'http://www.nhc.noaa.gov/tafb_latest/atlsea_latestBW.gif', 
-			'water', 
-			$response, 
+			'Análisis del estado del Atlántico (NOAA/NHC)',
+			'http://www.nhc.noaa.gov/tafb_latest/atlsea_latestBW.gif',
+			'water',
+			$response,
 			'ATLANTICO');
 	}
 
@@ -152,10 +152,10 @@ class Service
 	public function _caribe(Request $request, Response $response)
 	{
 		$this->commonImageResponse(
-			'Imagen del Caribe (Weather Channel)', 
-			'http://sirocco.accuweather.com/sat_mosaic_640x480_public/ei/isaecar.gif', 
-			'tree', 
-			$response, 
+			'Imagen del Caribe (Weather Channel)',
+			'http://sirocco.accuweather.com/sat_mosaic_640x480_public/ei/isaecar.gif',
+			'tree',
+			$response,
 			'CARIBE');
 	}
 
@@ -165,10 +165,10 @@ class Service
 	public function _presion(Request $request, Response $response)
 	{
 		$this->commonImageResponse(
-			'Presión superficial', 
-			'http://www.nhc.noaa.gov/tafb_latest/WATL_latest.gif', 
-			'thermometer-three-quarters', 
-			$response, 
+			'Presión superficial',
+			'http://www.nhc.noaa.gov/tafb_latest/WATL_latest.gif',
+			'thermometer-three-quarters',
+			$response,
 			'PRESION');
 	}
 
@@ -197,7 +197,7 @@ class Service
 	 * @throws Alert
 	 * @author kuma
 	 */
-	private function commonImageResponse($title, $url, $floatIcon='cloud_queue', Response $response, $command='')
+	private function commonImageResponse($title, $url, $floatIcon = 'cloud_queue', Response $response, $command = '')
 	{
 		// download and prepare the image
 		$image = $this->downloadAndPrepareImage($url);
@@ -214,9 +214,9 @@ class Service
 
 		// create content for the view
 		$content = [
-			'title' => $title, 
-			'image' => basename("$image"), 
-			'icon' => $floatIcon, 
+			'title' => $title,
+			'image' => basename("$image"),
+			'icon' => $floatIcon,
 			'command' => $command
 		];
 
@@ -232,7 +232,7 @@ class Service
 	 * @param String
 	 * @return String
 	 */
-	public function translate(String $type, String $text): string
+	public function translate(string $type, string $text): string
 	{
 		$clouds = [
 			'clear sky' => 'Cielo despejado',
